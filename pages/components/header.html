@@ -96,45 +96,73 @@
         <span>All Categories</span>
       </div>
 
-      <!-- Navigation Menu Links -->
-      <ul class="nav-menu-list">
-        <li>
-          <a href="index.html" class="nav-menu-link active" id="nav-home"
-            >Home</a
+      <!-- Mobile Menu Toggle Button -->
+      <button
+        class="mobile-menu-toggle"
+        id="mobile-menu-toggle"
+        aria-label="Open Navigation Menu"
+      >
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <!-- Navigation Menu Links (Wrapper functions as full-screen menu overlay on mobile) -->
+      <div class="nav-menu-wrapper" id="nav-menu-wrapper">
+        <div class="nav-menu-mobile-header">
+          <a href="index.html" class="mobile-menu-logo">
+            <img
+              src="assets/images/stackly-logo.webp"
+              alt="Stackly Logo"
+              class="logo-image"
+            />
+          </a>
+          <button
+            class="mobile-menu-close"
+            id="mobile-menu-close"
+            aria-label="Close Navigation Menu"
           >
-        </li>
-        <li>
-          <a
-            href="pages/categories.html"
-            class="nav-menu-link"
-            id="nav-categories"
-            >Categories</a
-          >
-        </li>
-        <li>
-          <a href="pages/offers.html" class="nav-menu-link" id="nav-offers"
-            >Offers</a
-          >
-        </li>
-        <li>
-          <a
-            href="pages/best-sellers.html"
-            class="nav-menu-link"
-            id="nav-best-sellers"
-            >Best Sellers</a
-          >
-        </li>
-        <li>
-          <a href="pages/blog.html" class="nav-menu-link" id="nav-blogs"
-            >Blogs</a
-          >
-        </li>
-        <li>
-          <a href="pages/contact.html" class="nav-menu-link" id="nav-contact"
-            >Contact Us</a
-          >
-        </li>
-      </ul>
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <ul class="nav-menu-list">
+          <li>
+            <a href="index.html" class="nav-menu-link active" id="nav-home"
+              >Home</a
+            >
+          </li>
+          <li>
+            <a
+              href="pages/categories.html"
+              class="nav-menu-link"
+              id="nav-categories"
+              >Categories</a
+            >
+          </li>
+          <li>
+            <a href="pages/offers.html" class="nav-menu-link" id="nav-offers"
+              >Offers</a
+            >
+          </li>
+          <li>
+            <a
+              href="pages/best-sellers.html"
+              class="nav-menu-link"
+              id="nav-best-sellers"
+              >Best Sellers</a
+            >
+          </li>
+          <li>
+            <a href="pages/blog.html" class="nav-menu-link" id="nav-blogs"
+              >Blogs</a
+            >
+          </li>
+          <li>
+            <a href="pages/contact.html" class="nav-menu-link" id="nav-contact"
+              >Contact Us</a
+            >
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
 </header>

@@ -67,6 +67,36 @@ class CustomHeader extends HTMLElement {
       link.classList.toggle("active", linkFile === currentFile);
     });
 
+    // Mobile menu toggle open/close
+    const menuToggle = this.querySelector("#mobile-menu-toggle");
+    const menuClose = this.querySelector("#mobile-menu-close");
+    const menuWrapper = this.querySelector("#nav-menu-wrapper");
+
+    if (menuToggle && menuWrapper) {
+      menuToggle.addEventListener("click", () => {
+        menuWrapper.classList.add("open");
+        document.body.style.overflow = "hidden"; // Disable background scrolling
+      });
+    }
+
+    if (menuClose && menuWrapper) {
+      menuClose.addEventListener("click", () => {
+        menuWrapper.classList.remove("open");
+        document.body.style.overflow = ""; // Enable background scrolling
+      });
+    }
+
+    // Close mobile menu when a link is clicked
+    const menuLinks = this.querySelectorAll(".nav-menu-link");
+    menuLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        if (menuWrapper) {
+          menuWrapper.classList.remove("open");
+          document.body.style.overflow = "";
+        }
+      });
+    });
+
     // Account dropdown (touch/mobile)
     const accountBtn = this.querySelector("#user-account-btn");
     const accountDropdown = this.querySelector("#account-dropdown");
@@ -116,6 +146,25 @@ class CustomHeader extends HTMLElement {
 class CustomFooter extends HTMLElement {
   async connectedCallback() {
     await loadComponent("custom-footer", "footer.html");
+
+    // Scroll to Top Button Functionality
+    const scrollTopBtn = this.querySelector("#scroll-to-top");
+    if (scrollTopBtn) {
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+          scrollTopBtn.classList.add("visible");
+        } else {
+          scrollTopBtn.classList.remove("visible");
+        }
+      });
+
+      scrollTopBtn.addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+    }
   }
 }
 
