@@ -1,0 +1,140 @@
+<header class="site-header">
+  <!-- Top Header Bar -->
+  <div class="header-top">
+    <div class="header-container">
+      <!-- Brand Logo -->
+      <a href="index.html" class="header-logo" id="header-logo-link">
+        <img
+          src="assets/images/stackly-logo.webp"
+          alt="Stackly Logo"
+          class="logo-image"
+        />
+      </a>
+
+      <!-- Product Search Bar -->
+      <div class="header-search">
+        <form
+          action="pages/categories.html"
+          method="GET"
+          class="search-form"
+          id="search-form"
+        >
+          <input
+            type="text"
+            placeholder="Search for products..."
+            name="search"
+            class="search-input"
+            aria-label="Search for products"
+          />
+          <button
+            type="submit"
+            class="search-button"
+            aria-label="Submit Search"
+          >
+            <i class="fa-solid fa-magnifying-glass search-icon icon"></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- Utility Action Links -->
+      <div class="header-actions">
+        <!-- Delivery Location -->
+        <div class="action-item delivery-info" id="delivery-location-btn">
+          <div class="action-icon-box">
+            <i class="fa-solid fa-location-dot location-icon icon"></i>
+          </div>
+          <div class="action-text-box">
+            <span class="action-subtext">Delivery to</span>
+            <span class="action-maintext text-bold">600001</span>
+          </div>
+        </div>
+
+        <!-- User Account Dropdown Trigger -->
+        <div class="action-item account-info" id="user-account-btn">
+          <div class="action-icon-box">
+            <i class="fa-solid fa-user profile-icon icon"></i>
+          </div>
+          <div class="action-text-box">
+            <span class="action-subtext">Login / Sign up</span>
+            <span class="action-maintext dropdown-trigger text-bold">
+              My Account
+              <i class="fa-solid fa-chevron-down chevron-icon icon"></i>
+            </span>
+          </div>
+
+          <!-- Dropdown Menu -->
+          <div class="dropdown-menu" id="account-dropdown">
+            <a href="pages/login.html" class="dropdown-item">Login</a>
+            <a href="pages/register.html" class="dropdown-item">Sign Up</a>
+          </div>
+        </div>
+
+        <!-- Shopping Cart Overview -->
+        <a
+          href="pages/categories.html"
+          class="action-item cart-info"
+          id="cart-overview-btn"
+        >
+          <div class="action-icon-box cart-badge-container">
+            <i class="fa-solid fa-cart-shopping cart-icon icon"></i>
+            <span class="cart-badge-count">1</span>
+          </div>
+          <div class="action-text-box">
+            <span class="action-maintext cart-amount text-bold">₹645</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Header Bar -->
+  <nav class="header-nav">
+    <div class="header-container nav-container">
+      <!-- All Categories Button -->
+      <div class="nav-categories-btn" id="all-categories-btn">
+        <i class="fa-solid fa-bars menu-icon icon"></i>
+        <span>All Categories</span>
+      </div>
+
+      <!-- Navigation Menu Links -->
+      <ul class="nav-menu-list">
+        <li>
+          <a href="index.html" class="nav-menu-link active" id="nav-home"
+            >Home</a
+          >
+        </li>
+        <li>
+          <a
+            href="pages/categories.html"
+            class="nav-menu-link"
+            id="nav-categories"
+            >Categories</a
+          >
+        </li>
+        <li>
+          <a href="pages/offers.html" class="nav-menu-link" id="nav-offers"
+            >Offers</a
+          >
+        </li>
+        <li>
+          <a
+            href="pages/best-sellers.html"
+            class="nav-menu-link"
+            id="nav-best-sellers"
+            >Best Sellers</a
+          >
+        </li>
+        <li>
+          <a href="pages/blog.html" class="nav-menu-link" id="nav-blogs"
+            >Blogs</a
+          >
+        </li>
+        <li>
+          <a href="pages/contact.html" class="nav-menu-link" id="nav-contact"
+            >Contact Us</a
+          >
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

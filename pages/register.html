@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - Stackly Grocery</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome Icons CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <!-- Main CSS (relative path from pages/ directory) -->
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+    <!-- JavaScript Component Loader -->
+    <script src="../assets/js/script.js" defer></script>
+  </head>
+  <body style="display: flex; flex-direction: column; min-height: 100vh">
+    <!-- Reusable Custom Header -->
+    <custom-header></custom-header>
+
+    <!-- Page Content -->
+    <main
+      style="
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 24px;
+        flex-grow: 1;
+        width: 100%;
+      "
+    >
+      <div
+        style="
+          background-color: var(--bg-white);
+          border-radius: 12px;
+          padding: 40px;
+          border: 1px solid var(--border-color);
+          box-shadow: var(--shadow-sm);
+          max-width: 450px;
+          margin: 40px auto;
+        "
+      >
+        <h1
+          style="
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 24px;
+            text-align: center;
+          "
+        >
+          Create Account
+        </h1>
+
+        <form style="display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label
+              style="
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--text-medium);
+              "
+              >Full Name</label
+            >
+            <input
+              type="text"
+              placeholder="enter your name"
+              style="
+                padding: 10px 14px;
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                outline: none;
+                font-size: 14px;
+              "
+            />
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label
+              style="
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--text-medium);
+              "
+              >Email Address</label
+            >
+            <input
+              type="email"
+              placeholder="enter your email"
+              style="
+                padding: 10px 14px;
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                outline: none;
+                font-size: 14px;
+              "
+            />
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label
+              style="
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--text-medium);
+              "
+              >Password</label
+            >
+            <input
+              type="password"
+              placeholder="create password"
+              style="
+                padding: 10px 14px;
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                outline: none;
+                font-size: 14px;
+              "
+            />
+          </div>
+          <button
+            type="submit"
+            style="
+              background-color: var(--primary-color);
+              color: white;
+              border: none;
+              padding: 12px;
+              border-radius: 6px;
+              font-weight: 600;
+              cursor: pointer;
+              margin-top: 8px;
+            "
+          >
+            Sign Up
+          </button>
+        </form>
+
+        <p
+          style="
+            margin-top: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-light);
+          "
+        >
+          Already have an account?
+          <a
+            href="login.html"
+            style="
+              color: var(--primary-color);
+              text-decoration: none;
+              font-weight: 600;
+            "
+            >Login</a
+          >
+        </p>
+      </div>
+    </main>
+
+    <!-- Reusable Custom Footer -->
+    <custom-footer></custom-footer>
+
+    <!-- Bootstrap 5 JS Bundle CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
