@@ -22,6 +22,8 @@
     />
     <!-- Main CSS (relative path from pages/ directory) -->
     <link rel="stylesheet" href="../assets/css/styles.css" />
+    <!-- Offers CSS -->
+    <link rel="stylesheet" href="../assets/css/offers.css" />
     <!-- JavaScript Component Loader -->
     <script src="../assets/js/script.js" defer></script>
   </head>
@@ -29,39 +31,674 @@
     <!-- Reusable Custom Header -->
     <custom-header></custom-header>
 
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-bar">
+      <div class="container">
+        <nav class="breadcrumb-nav" aria-label="breadcrumb">
+          <a href="../index.html" class="breadcrumb-link">
+            <i class="fa-solid fa-house" style="color: #439a3a"></i> Home
+          </a>
+          <span class="breadcrumb-separator">
+            <i class="fa-solid fa-chevron-right"></i>
+          </span>
+          <span class="breadcrumb-current">Offers</span>
+        </nav>
+      </div>
+    </div>
+
     <!-- Page Content -->
-    <main
-      style="
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 0 24px;
-        flex-grow: 1;
-        width: 100%;
-      "
-    >
-      <div
-        style="
-          background-color: var(--bg-white);
-          border-radius: 12px;
-          padding: 40px;
-          border: 1px solid var(--border-color);
-          box-shadow: var(--shadow-sm);
-        "
-      >
-        <h1
-          style="
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 16px;
-          "
-        >
-          Super Offers & Bargains
-        </h1>
-        <p style="color: var(--text-medium); font-size: 15px; line-height: 1.6">
-          Grab exclusive weekly discounts, coupon codes, and buy-one-get-one
-          offers on our premium stocks.
+    <main class="offers-page container my-4 flex-grow-1">
+      <!-- Title Section -->
+      <div class="offers-header">
+        <h1 class="offers-title">Offers & Deals</h1>
+        <p class="offers-subtitle">
+          Grab the best deals and save more on your daily essentials.
         </p>
+      </div>
+
+      <!-- Hero Promo Banner -->
+      <div class="offers-hero-banner">
+        <div class="banner-content-left">
+          <span class="banner-badge">SUPER SAVER DEAL</span>
+          <h2 class="banner-heading">Up to 50% off</h2>
+          <p class="banner-subheading">On your favorite products</p>
+          <p class="banner-text">Limited time offer. Shop now and save big!</p>
+          <a href="#" class="banner-btn">Shop Now</a>
+        </div>
+        <div class="banner-img-right">
+          <img
+            src="../assets/images/offers/offers-banner-image.webp"
+            alt="Grocery Basket"
+            class="banner-basket-img"
+          />
+          <img
+            src="../assets/images/offers/offers-discount-50-percent.webp"
+            alt="50% OFF"
+            class="banner-discount-badge"
+          />
+        </div>
+      </div>
+
+      <!-- Features Bar -->
+      <div class="features-bar">
+        <div class="feature-item">
+          <div class="feature-icon-wrapper">
+            <i class="fa-solid fa-tags"></i>
+          </div>
+          <div class="feature-info">
+            <span class="feature-title">Best Prices</span>
+            <span class="feature-desc">Unbeatable prices</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon-wrapper">
+            <i class="fa-solid fa-percent"></i>
+          </div>
+          <div class="feature-info">
+            <span class="feature-title">Great Discounts</span>
+            <span class="feature-desc">Save more everyday</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon-wrapper">
+            <i class="fa-solid fa-gift"></i>
+          </div>
+          <div class="feature-info">
+            <span class="feature-title">Exclusive Offers</span>
+            <span class="feature-desc">Special offers for you</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon-wrapper">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+          <div class="feature-info">
+            <span class="feature-title">Limited Time</span>
+            <span class="feature-desc">Hurry! Deals end soon</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid Layout for Sidebar Filters and Offers Content -->
+      <div class="row g-4">
+        <!-- Sidebar Filter Column -->
+        <aside class="col-lg-3 col-md-4">
+          <div class="offer-filter-column">
+            <h2 class="section-title mb-3">Filter Offers</h2>
+            <!-- Discount Filter Card -->
+            <div class="filter-card">
+              <h3 class="filter-title">Discount</h3>
+              <div class="filter-group" id="discount-filter-group">
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" value="10" />
+                  10% and above
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" value="20" />
+                  20% and above
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" value="30" />
+                  30% and above
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" value="40" />
+                  40% and above
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" value="50" />
+                  50% and above
+                </label>
+              </div>
+            </div>
+
+            <!-- Category Filter Card -->
+            <div class="filter-card">
+              <h3 class="filter-title">Category</h3>
+              <ul class="category-filter-list" id="offers-category-list">
+                <li class="category-filter-item active" data-category="all">
+                  <a href="#"
+                    >All Categories <i class="fa-solid fa-chevron-right"></i
+                  ></a>
+                </li>
+                <li class="category-filter-item" data-category="fruits">
+                  <a href="#"
+                    >Fruits & Vegetables
+                    <i class="fa-solid fa-chevron-right"></i
+                  ></a>
+                </li>
+                <li class="category-filter-item" data-category="dairy">
+                  <a href="#"
+                    >Dairy & Eggs <i class="fa-solid fa-chevron-right"></i
+                  ></a>
+                </li>
+                <li class="category-filter-item" data-category="beverages">
+                  <a href="#"
+                    >Beverages <i class="fa-solid fa-chevron-right"></i
+                  ></a>
+                </li>
+                <li class="category-filter-item" data-category="snacks">
+                  <a href="#"
+                    >Snacks & Munchies <i class="fa-solid fa-chevron-right"></i
+                  ></a>
+                </li>
+                <li class="category-filter-item" data-category="staples">
+                  <a href="#"
+                    >Grocery & Staples <i class="fa-solid fa-chevron-right"></i
+                  ></a>
+                </li>
+                <li class="category-filter-item" data-category="personal">
+                  <a href="#"
+                    >Personal Care <i class="fa-solid fa-chevron-right"></i
+                  ></a>
+                </li>
+                <li class="category-filter-item" data-category="home">
+                  <a href="#"
+                    >Home Care <i class="fa-solid fa-chevron-right"></i
+                  ></a>
+                </li>
+                <li class="category-filter-item" data-category="baby">
+                  <a href="#"
+                    >Baby Care <i class="fa-solid fa-chevron-right"></i
+                  ></a>
+                </li>
+                <li class="category-filter-item" data-category="others">
+                  <a href="#"
+                    >Others <i class="fa-solid fa-chevron-right"></i
+                  ></a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Sort By Card -->
+            <div class="filter-card">
+              <h3 class="filter-title">Sort By</h3>
+              <div class="filter-group" id="sort-filter-group">
+                <label class="filter-radio-label">
+                  <input
+                    type="radio"
+                    name="sort-by"
+                    class="filter-radio"
+                    value="popular"
+                    checked
+                  />
+                  Most Popular
+                </label>
+                <label class="filter-radio-label">
+                  <input
+                    type="radio"
+                    name="sort-by"
+                    class="filter-radio"
+                    value="discount-desc"
+                  />
+                  Highest Discount
+                </label>
+                <label class="filter-radio-label">
+                  <input
+                    type="radio"
+                    name="sort-by"
+                    class="filter-radio"
+                    value="price-asc"
+                  />
+                  Price: Low to High
+                </label>
+                <label class="filter-radio-label">
+                  <input
+                    type="radio"
+                    name="sort-by"
+                    class="filter-radio"
+                    value="price-desc"
+                  />
+                  Price: High to Low
+                </label>
+                <label class="filter-radio-label">
+                  <input
+                    type="radio"
+                    name="sort-by"
+                    class="filter-radio"
+                    value="newest"
+                  />
+                  Newest First
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Alert Subscription Card -->
+          <div class="filter-card-alert mt-4">
+            <div class="alert-bell-circle">
+              <i class="fa-solid fa-bell"></i>
+            </div>
+            <h4 class="alert-title">Don't miss any offers!</h4>
+            <p class="alert-subtitle">
+              Enable notifications to get alert on exclusive deals.
+            </p>
+            <button class="alert-btn" id="offers-alert-btn">
+              Enable Alerts <i class="fa-solid fa-chevron-right ms-1"></i>
+            </button>
+          </div>
+        </aside>
+
+        <!-- Right Content Main Column -->
+        <div class="col-lg-9 col-md-8">
+          <!-- TOP OFFERS SECTION -->
+          <div class="section-header-row mb-3">
+            <h2 class="section-title">Top Offers</h2>
+            <a href="#" class="view-all-link"
+              >View all offers <i class="fa-solid fa-chevron-right ms-1"></i
+            ></a>
+          </div>
+
+          <!-- Deal of the Day Block -->
+          <div class="deal-header-wrapper">
+            <h3 class="section-title h5 mb-0 fw-bold" style="font-size: 18px">
+              Deal of the Day
+            </h3>
+            <div class="offers-countdown d-flex align-items-center gap-2">
+              <span class="countdown-label text-secondary fw-medium"
+                >Ends in</span
+              >
+              <div class="countdown-timer d-flex align-items-center gap-1">
+                <span class="timer-block" id="timer-hours">08</span>
+                <span class="timer-colon">:</span>
+                <span class="timer-block" id="timer-minutes">45</span>
+                <span class="timer-colon">:</span>
+                <span class="timer-block" id="timer-seconds">32</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="deal-inner-container">
+            <!-- 3 Category Promo Banners Grid -->
+            <div class="row g-3 promo-banners-row">
+              <!-- Banner 1: Fruits -->
+              <div class="col-lg-4 col-md-6">
+                <div class="offer-banner-card card-fruits">
+                  <div class="offer-banner-content">
+                    <span class="offer-category">Fresh Fruits</span>
+                    <h3 class="offer-discount">Up to 30% Off</h3>
+                    <a href="#" class="btn-offer">Shop Fruits</a>
+                  </div>
+                  <div class="offer-banner-img-wrapper">
+                    <img
+                      src="../assets/images/home/home-offer-image-1.webp"
+                      alt="Fresh Fruits"
+                      class="offer-banner-img"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- Banner 2: Essentials -->
+              <div class="col-lg-4 col-md-6">
+                <div class="offer-banner-card card-essentials">
+                  <div class="offer-banner-content">
+                    <span class="offer-category">Daily Essentials</span>
+                    <h3 class="offer-discount">Up to 25% Off</h3>
+                    <a href="#" class="btn-offer">Shop Now</a>
+                  </div>
+                  <div class="offer-banner-img-wrapper">
+                    <img
+                      src="../assets/images/home/home-offer-image-2.webp"
+                      alt="Daily Essentials"
+                      class="offer-banner-img"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- Banner 3: Personal Care -->
+              <div class="col-lg-4 col-md-12">
+                <div class="offer-banner-card card-personal">
+                  <div class="offer-banner-content">
+                    <span class="offer-category">Personal Care</span>
+                    <h3 class="offer-discount">Up to 20% Off</h3>
+                    <a href="#" class="btn-offer">Shop Now</a>
+                  </div>
+                  <div class="offer-banner-img-wrapper">
+                    <img
+                      src="../assets/images/home/home-offer-image-3.webp"
+                      alt="Personal Care"
+                      class="offer-banner-img"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product Carousel Slider -->
+            <div
+              class="deals-slider-outer position-relative"
+              style="margin-top: 32px"
+            >
+              <!-- Navigation Buttons -->
+              <button
+                class="deals-arrow arrow-left"
+                id="offers-prev-btn"
+                aria-label="Previous slide"
+              >
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <button
+                class="deals-arrow arrow-right"
+                id="offers-next-btn"
+                aria-label="Next slide"
+              >
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+
+              <div class="deals-slider-wrapper">
+                <div class="deals-slider-track" id="offers-track">
+                  <!-- Product 1: Apples -->
+                  <div
+                    class="offer-product-slide deal-slide"
+                    data-category="fruits"
+                    data-discount="20"
+                    data-price="150"
+                    data-popular="95"
+                    data-date="2026-08-10"
+                  >
+                    <div class="deal-product-card">
+                      <span class="deal-badge-discount">20% OFF</span>
+                      <div class="deal-image-wrapper">
+                        <img
+                          src="../assets/images/home/home-top-deals-1-fresh-apples-red.webp"
+                          alt="Fresh Apples Red"
+                          class="deal-product-img"
+                        />
+                      </div>
+                      <div class="deal-product-info">
+                        <h3 class="deal-product-title">Fresh Apples Red</h3>
+                        <div class="deal-product-qty">1 kg</div>
+                        <div class="deal-price-row">
+                          <span class="deal-price-current">₹150</span>
+                          <span class="deal-price-original">₹190</span>
+                        </div>
+                        <button class="deal-btn-add">Add to Cart</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Product 2: Milk -->
+                  <div
+                    class="offer-product-slide deal-slide"
+                    data-category="dairy"
+                    data-discount="20"
+                    data-price="32"
+                    data-popular="98"
+                    data-date="2026-08-11"
+                  >
+                    <div class="deal-product-card">
+                      <span class="deal-badge-discount">20% OFF</span>
+                      <div class="deal-image-wrapper">
+                        <img
+                          src="../assets/images/home/home-top-deals-2-amul-fresh-milk.webp"
+                          alt="Amul Fresh Milk"
+                          class="deal-product-img"
+                        />
+                      </div>
+                      <div class="deal-product-info">
+                        <h3 class="deal-product-title">Amul Fresh Milk</h3>
+                        <div class="deal-product-qty">1 L</div>
+                        <div class="deal-price-row">
+                          <span class="deal-price-current">₹32</span>
+                          <span class="deal-price-original">₹40</span>
+                        </div>
+                        <button class="deal-btn-add">Add to Cart</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Product 3: Rice -->
+                  <div
+                    class="offer-product-slide deal-slide"
+                    data-category="staples"
+                    data-discount="20"
+                    data-price="112"
+                    data-popular="85"
+                    data-date="2026-08-08"
+                  >
+                    <div class="deal-product-card">
+                      <span class="deal-badge-discount">20% OFF</span>
+                      <div class="deal-image-wrapper">
+                        <img
+                          src="../assets/images/home/home-top-deals-4-india-gate-basmati-rice.webp"
+                          alt="India Gate Basmati Rice"
+                          class="deal-product-img"
+                        />
+                      </div>
+                      <div class="deal-product-info">
+                        <h3 class="deal-product-title">
+                          India Gate Basmati Rice
+                        </h3>
+                        <div class="deal-product-qty">1 kg</div>
+                        <div class="deal-price-row">
+                          <span class="deal-price-current">₹112</span>
+                          <span class="deal-price-original">₹140</span>
+                        </div>
+                        <button class="deal-btn-add">Add to Cart</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Product 4: Sunflower Oil -->
+                  <div
+                    class="offer-product-slide deal-slide"
+                    data-category="staples"
+                    data-discount="20"
+                    data-price="136"
+                    data-popular="88"
+                    data-date="2026-08-09"
+                  >
+                    <div class="deal-product-card">
+                      <span class="deal-badge-discount">20% OFF</span>
+                      <div class="deal-image-wrapper">
+                        <img
+                          src="../assets/images/home/home-top-deals-3-fortune-sunflower-oil.webp"
+                          alt="Fortune Sunflower Oil"
+                          class="deal-product-img"
+                        />
+                      </div>
+                      <div class="deal-product-info">
+                        <h3 class="deal-product-title">
+                          Fortune Sunflower Oil
+                        </h3>
+                        <div class="deal-product-qty">1 L</div>
+                        <div class="deal-price-row">
+                          <span class="deal-price-current">₹136</span>
+                          <span class="deal-price-original">₹170</span>
+                        </div>
+                        <button class="deal-btn-add">Add to Cart</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Product 5: Lay's Chips -->
+                  <div
+                    class="offer-product-slide deal-slide"
+                    data-category="snacks"
+                    data-discount="20"
+                    data-price="20"
+                    data-popular="92"
+                    data-date="2026-08-12"
+                  >
+                    <div class="deal-product-card">
+                      <span class="deal-badge-discount">20% OFF</span>
+                      <div class="deal-image-wrapper">
+                        <img
+                          src="../assets/images/home/home-top-deals-5-lay's-classic-salted.webp"
+                          alt="Lay's Classic Salted"
+                          class="deal-product-img"
+                        />
+                      </div>
+                      <div class="deal-product-info">
+                        <h3 class="deal-product-title">Lay's Classic Salted</h3>
+                        <div class="deal-product-qty">50 g</div>
+                        <div class="deal-price-row">
+                          <span class="deal-price-current">₹20</span>
+                          <span class="deal-price-original">₹25</span>
+                        </div>
+                        <button class="deal-btn-add">Add to Cart</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MORE OFFERS FOR YOU SECTION -->
+          <div class="section-header-row mb-3">
+            <h2 class="section-title">More Offers for You</h2>
+            <a href="#" class="view-all-link"
+              >View all offers <i class="fa-solid fa-chevron-right ms-1"></i
+            ></a>
+          </div>
+
+          <!-- Empty State visual container -->
+          <div class="offers-empty-state" id="offers-empty-state">
+            <i class="fa-solid fa-face-frown"></i>
+            <p>
+              No products or coupons match the selected filters. Try clearing
+              some selections.
+            </p>
+          </div>
+
+          <!-- Coupons Grid -->
+          <div class="coupons-grid" id="coupons-grid">
+            <!-- Coupon 1: Beverages -->
+            <div
+              class="coupon-card"
+              data-category="beverages"
+              data-discount="15"
+            >
+              <div class="coupon-icon-wrapper coupon-theme-green">
+                <i class="fa-solid fa-percent"></i>
+              </div>
+              <div
+                class="coupon-details d-flex align-items-center justify-content-between"
+              >
+                <div class="">
+                  <h4 class="coupon-title">Flat 15% Off on Beverages</h4>
+                  <p class="coupon-subtitle">On minimum purchase of ₹499</p>
+                  <div class="coupon-footer-row">
+                    <span class="coupon-code-wrapper"
+                      >Use Code:<span class="coupon-code">BEV15</span></span
+                    >
+                  </div>
+                </div>
+                <a href="#" class="coupon-btn">Shop Now</a>
+              </div>
+            </div>
+
+            <!-- Coupon 2: Fashion -->
+            <div class="coupon-card" data-category="others" data-discount="30">
+              <div class="coupon-icon-wrapper coupon-theme-orange">
+                <i class="fa-solid fa-percent"></i>
+              </div>
+              <div
+                class="coupon-details d-flex align-items-center justify-content-between"
+              >
+                <div>
+                  <h4 class="coupon-title">Buy 2 Get 1 Free</h4>
+                  <p class="coupon-subtitle">On select fashion & accessories</p>
+                  <div class="coupon-footer-row">
+                    <span class="coupon-code-wrapper"
+                      >Use Code:<span class="coupon-code">FASH3</span></span
+                    >
+                  </div>
+                </div>
+                <a href="#" class="coupon-btn">Shop Now</a>
+              </div>
+            </div>
+
+            <!-- Coupon 3: Dairy -->
+            <div class="coupon-card" data-category="dairy" data-discount="20">
+              <div class="coupon-icon-wrapper coupon-theme-purple">
+                <i class="fa-solid fa-percent"></i>
+              </div>
+              <div
+                class="coupon-details d-flex align-items-center justify-content-between"
+              >
+                <div>
+                  <h4 class="coupon-title">Flat 20% Off on Dairy Products</h4>
+                  <p class="coupon-subtitle">On daily fresh dairy items</p>
+                  <div class="coupon-footer-row">
+                    <span class="coupon-code-wrapper"
+                      >Use Code:<span class="coupon-code">DAIRY20</span></span
+                    >
+                  </div>
+                </div>
+                <a href="#" class="coupon-btn">Shop Now</a>
+              </div>
+            </div>
+
+            <!-- Coupon 4: Personal Care -->
+            <div
+              class="coupon-card"
+              data-category="personal"
+              data-discount="25"
+            >
+              <div class="coupon-icon-wrapper coupon-theme-blue">
+                <i class="fa-solid fa-percent"></i>
+              </div>
+              <div
+                class="coupon-details d-flex align-items-center justify-content-between"
+              >
+                <div>
+                  <h4 class="coupon-title">Flat 25% Off on Personal Care</h4>
+                  <p class="coupon-subtitle">On shampoo, soaps & more</p>
+                  <div class="coupon-footer-row">
+                    <span class="coupon-code-wrapper"
+                      >Use Code:<span class="coupon-code">CARE25</span></span
+                    >
+                  </div>
+                </div>
+                <a href="#" class="coupon-btn">Shop Now</a>
+              </div>
+            </div>
+
+            <!-- Coupon 5: Home Care -->
+            <div class="coupon-card" data-category="home" data-discount="30">
+              <div class="coupon-icon-wrapper coupon-theme-yellow">
+                <i class="fa-solid fa-percent"></i>
+              </div>
+              <div
+                class="coupon-details d-flex align-items-center justify-content-between"
+              >
+                <div>
+                  <h4 class="coupon-title">Up to 30% Off on Home Care</h4>
+                  <p class="coupon-subtitle">On cleaning essentials & more</p>
+                  <div class="coupon-footer-row">
+                    <span class="coupon-code-wrapper"
+                      >Use Code:<span class="coupon-code">HOME30</span></span
+                    >
+                  </div>
+                </div>
+                <a href="#" class="coupon-btn">Shop Now</a>
+              </div>
+            </div>
+
+            <!-- Coupon 6: Baby Care -->
+            <div class="coupon-card" data-category="baby" data-discount="10">
+              <div class="coupon-icon-wrapper coupon-theme-pink">
+                <i class="fa-solid fa-percent"></i>
+              </div>
+              <div
+                class="coupon-details d-flex align-items-center justify-content-between"
+              >
+                <div>
+                  <h4 class="coupon-title">Flat 10% Off on Baby Care</h4>
+                  <p class="coupon-subtitle">On diapers, baby food & more</p>
+                  <div class="coupon-footer-row">
+                    <span class="coupon-code-wrapper"
+                      >Use Code:<span class="coupon-code">BABY10</span></span
+                    >
+                  </div>
+                </div>
+                <a href="#" class="coupon-btn">Shop Now</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
 

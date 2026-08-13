@@ -186,10 +186,16 @@ function setupInfiniteSlider(trackId, prevBtnId, nextBtnId, slideClass) {
     const origCount = origSlides.length;
 
     // Clone all slides and append for infinite effect
-    origSlides.forEach((s) => track.appendChild(s.cloneNode(true)));
-    origSlides.forEach((s) =>
-      track.insertBefore(s.cloneNode(true), track.firstChild),
-    );
+    origSlides.forEach((s) => {
+      const clone = s.cloneNode(true);
+      clone.setAttribute("data-is-clone", "true");
+      track.appendChild(clone);
+    });
+    origSlides.forEach((s) => {
+      const clone = s.cloneNode(true);
+      clone.setAttribute("data-is-clone", "true");
+      track.insertBefore(clone, track.firstChild);
+    });
 
     // currentIndex starts at origCount (pointing to the real first slide)
     let currentIndex = origCount;
@@ -546,6 +552,228 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
+  }
+
+  // --- Offers Page: Slider & Filters ---
+  const offersTrack = document.getElementById("offers-track");
+  const offersCategoryList = document.getElementById("offers-category-list");
+  const discountFilterGroup = document.getElementById("discount-filter-group");
+  const sortFilterGroup = document.getElementById("sort-filter-group");
+  const offersEmptyState = document.getElementById("offers-empty-state");
+  const offersAlertBtn = document.getElementById("offers-alert-btn");
+
+  if (offersTrack) {
+    // 1. Initialize Offers Carousel
+    setupInfiniteSlider(
+      "offers-track",
+      "offers-prev-btn",
+      "offers-next-btn",
+      "offer-product-slide",
+    );
+
+    const sliderOuter = offersTrack.closest(".deals-slider-outer");
+    const couponsGrid = document.getElementById("coupons-grid");
+    const couponCards = couponsGrid
+      ? couponsGrid.querySelectorAll(".coupon-card")
+      : [];
+
+    let currentCategory = "all";
+    let activeDiscounts = [];
+    let currentSort = "popular";
+
+    // Store original products list (excluding clones) for sorting and filtering
+    const allSlides = Array.from(
+      offersTrack.querySelectorAll(".offer-product-slide"),
+    );
+    // Keep reference to the non-cloned original product slides
+    const originalSlides = allSlides.filter(
+      (slide) => slide.getAttribute("data-is-clone") !== "true",
+    );
+
+    function updateOffersUI() {
+      // Check if filter is active
+      const isFilteringActive =
+        currentCategory !== "all" || activeDiscounts.length > 0;
+
+      // Minimum discount threshold
+      const minDiscount =
+        activeDiscounts.length > 0 ? Math.min(...activeDiscounts) : 0;
+
+      // Filter product slides in DOM
+      let visibleProductsCount = 0;
+
+      allSlides.forEach((slide) => {
+        const slideCategory = slide.getAttribute("data-category");
+        const slideDiscount =
+          parseInt(slide.getAttribute("data-discount")) || 0;
+        const isClone = slide.getAttribute("data-is-clone") === "true";
+
+        const categoryMatch =
+          currentCategory === "all" || slideCategory === currentCategory;
+        const discountMatch = slideDiscount >= minDiscount;
+        const isVisible = categoryMatch && discountMatch;
+
+        if (isVisible) {
+          if (isFilteringActive) {
+            // In filtering mode, we lay them out as a grid, so hide all clones to avoid duplicates
+            if (isClone) {
+              slide.classList.add("is-hidden");
+            } else {
+              slide.classList.remove("is-hidden");
+              visibleProductsCount++;
+            }
+          } else {
+            // In standard carousel mode, show both original and clones
+            slide.classList.remove("is-hidden");
+            if (!isClone) visibleProductsCount++;
+          }
+        } else {
+          slide.classList.add("is-hidden");
+        }
+      });
+
+      // Filter coupon cards
+      let visibleCouponsCount = 0;
+      couponCards.forEach((coupon) => {
+        const couponCategory = coupon.getAttribute("data-category");
+        const couponDiscount =
+          parseInt(coupon.getAttribute("data-discount")) || 0;
+
+        const categoryMatch =
+          currentCategory === "all" || couponCategory === currentCategory;
+        const discountMatch = couponDiscount >= minDiscount;
+
+        if (categoryMatch && discountMatch) {
+          coupon.classList.remove("is-hidden");
+          visibleCouponsCount++;
+        } else {
+          coupon.classList.add("is-hidden");
+        }
+      });
+
+      // Update layout class on outer slider container
+      if (sliderOuter) {
+        if (isFilteringActive) {
+          sliderOuter.classList.add("is-filtered");
+        } else {
+          sliderOuter.classList.remove("is-filtered");
+          // Force layout refresh for slider width calculations
+          window.dispatchEvent(new Event("resize"));
+        }
+      }
+
+      // Handle Empty State visual
+      if (offersEmptyState) {
+        if (visibleProductsCount === 0 && visibleCouponsCount === 0) {
+          offersEmptyState.style.display = "block";
+        } else {
+          offersEmptyState.style.display = "none";
+        }
+      }
+    }
+
+    // Sort product slides in the DOM track
+    function sortOffersProducts() {
+      // Filter out clones and sort the original slides
+      const sortedSlides = originalSlides.slice().sort((a, b) => {
+        if (currentSort === "price-asc") {
+          return (
+            parseFloat(a.getAttribute("data-price")) -
+            parseFloat(b.getAttribute("data-price"))
+          );
+        } else if (currentSort === "price-desc") {
+          return (
+            parseFloat(b.getAttribute("data-price")) -
+            parseFloat(a.getAttribute("data-price"))
+          );
+        } else if (currentSort === "discount-desc") {
+          return (
+            parseInt(b.getAttribute("data-discount")) -
+            parseInt(a.getAttribute("data-discount"))
+          );
+        } else if (currentSort === "newest") {
+          return (
+            new Date(b.getAttribute("data-date")) -
+            new Date(a.getAttribute("data-date"))
+          );
+        } else {
+          // Default: popular
+          return (
+            parseInt(b.getAttribute("data-popular")) -
+            parseInt(a.getAttribute("data-popular"))
+          );
+        }
+      });
+
+      // Re-append elements to track in their sorted order
+      sortedSlides.forEach((slide) => {
+        offersTrack.appendChild(slide);
+      });
+
+      updateOffersUI();
+    }
+
+    // Category click handler
+    if (offersCategoryList) {
+      const categoryItems = offersCategoryList.querySelectorAll(
+        ".category-filter-item",
+      );
+      categoryItems.forEach((item) => {
+        item.addEventListener("click", (e) => {
+          e.preventDefault();
+          categoryItems.forEach((i) => i.classList.remove("active"));
+          item.classList.add("active");
+          currentCategory = item.getAttribute("data-category");
+          updateOffersUI();
+        });
+      });
+    }
+
+    // Discount checkbox change handler
+    if (discountFilterGroup) {
+      const checkboxes =
+        discountFilterGroup.querySelectorAll(".filter-checkbox");
+      checkboxes.forEach((cb) => {
+        cb.addEventListener("change", () => {
+          activeDiscounts = Array.from(checkboxes)
+            .filter((c) => c.checked)
+            .map((c) => parseInt(c.value));
+          updateOffersUI();
+        });
+      });
+    }
+
+    // Sort radio button change handler
+    if (sortFilterGroup) {
+      const radios = sortFilterGroup.querySelectorAll(".filter-radio");
+      radios.forEach((radio) => {
+        radio.addEventListener("change", () => {
+          if (radio.checked) {
+            currentSort = radio.value;
+            sortOffersProducts();
+          }
+        });
+      });
+    }
+
+    // Alerts Button feedback
+    if (offersAlertBtn) {
+      offersAlertBtn.addEventListener("click", () => {
+        const originalText = offersAlertBtn.innerHTML;
+        offersAlertBtn.disabled = true;
+        offersAlertBtn.innerHTML =
+          '<i class="fa-solid fa-circle-check"></i> Alerts Subscribed!';
+        offersAlertBtn.style.backgroundColor = "#2e7d32";
+        offersAlertBtn.style.boxShadow = "none";
+
+        setTimeout(() => {
+          offersAlertBtn.innerHTML = originalText;
+          offersAlertBtn.disabled = false;
+          offersAlertBtn.style.backgroundColor = "";
+          offersAlertBtn.style.boxShadow = "";
+        }, 3000);
+      });
+    }
   }
 
   // --- Newsletter Subscription Form Handler ---
