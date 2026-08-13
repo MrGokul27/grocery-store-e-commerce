@@ -175,7 +175,13 @@ customElements.define("custom-footer", CustomFooter);
 // Sliders Setup Function — infinite loop, moves 1 slide at a time
 // -------------------------------------------------------------
 
-function setupInfiniteSlider(trackId, prevBtnId, nextBtnId, slideClass) {
+function setupInfiniteSlider(
+  trackId,
+  prevBtnId,
+  nextBtnId,
+  slideClass,
+  options = {},
+) {
   const track = document.getElementById(trackId);
   const prevBtn = document.getElementById(prevBtnId);
   const nextBtn = document.getElementById(nextBtnId);
@@ -184,6 +190,11 @@ function setupInfiniteSlider(trackId, prevBtnId, nextBtnId, slideClass) {
     const GAP = 24;
     const origSlides = Array.from(track.querySelectorAll("." + slideClass));
     const origCount = origSlides.length;
+
+    const maxVisible = options.maxVisible || 5;
+    const autoPlay = options.autoPlay || false;
+    const autoPlayDelay = options.autoPlayDelay || 4000;
+    let autoPlayInterval = null;
 
     // Clone all slides and append for infinite effect
     origSlides.forEach((s) => {
@@ -203,10 +214,10 @@ function setupInfiniteSlider(trackId, prevBtnId, nextBtnId, slideClass) {
 
     function getVisibleCount() {
       const w = window.innerWidth;
-      if (w >= 1200) return 5;
-      if (w >= 992) return 4;
-      if (w >= 768) return 3;
-      if (w >= 576) return 2;
+      if (w >= 1200) return maxVisible;
+      if (w >= 992) return Math.min(4, maxVisible);
+      if (w >= 768) return Math.min(3, maxVisible);
+      if (w >= 576) return Math.min(2, maxVisible);
       return 1;
     }
 
@@ -250,19 +261,69 @@ function setupInfiniteSlider(trackId, prevBtnId, nextBtnId, slideClass) {
       isTransitioning = false;
     });
 
-    prevBtn.addEventListener("click", () => {
+    function nextSlide() {
       if (isTransitioning) return;
-      isTransitioning = true;
-      currentIndex--;
-      goTo(currentIndex, true);
-    });
 
-    nextBtn.addEventListener("click", () => {
-      if (isTransitioning) return;
+      // Do not autoPlay or scroll if the slider is currently filtered
+      const sliderOuter = track.closest(".deals-slider-outer");
+      if (sliderOuter && sliderOuter.classList.contains("is-filtered")) {
+        return;
+      }
+
       isTransitioning = true;
       currentIndex++;
       goTo(currentIndex, true);
+    }
+
+    function prevSlide() {
+      if (isTransitioning) return;
+
+      // Do not scroll if the slider is currently filtered
+      const sliderOuter = track.closest(".deals-slider-outer");
+      if (sliderOuter && sliderOuter.classList.contains("is-filtered")) {
+        return;
+      }
+
+      isTransitioning = true;
+      currentIndex--;
+      goTo(currentIndex, true);
+    }
+
+    prevBtn.addEventListener("click", () => {
+      prevSlide();
+      if (autoPlay) resetAutoPlay();
     });
+
+    nextBtn.addEventListener("click", () => {
+      nextSlide();
+      if (autoPlay) resetAutoPlay();
+    });
+
+    function startAutoPlay() {
+      if (autoPlay && !autoPlayInterval) {
+        autoPlayInterval = setInterval(nextSlide, autoPlayDelay);
+      }
+    }
+
+    function stopAutoPlay() {
+      if (autoPlayInterval) {
+        clearInterval(autoPlayInterval);
+        autoPlayInterval = null;
+      }
+    }
+
+    function resetAutoPlay() {
+      stopAutoPlay();
+      startAutoPlay();
+    }
+
+    if (autoPlay) {
+      const sliderOuter = track.closest(".deals-slider-outer");
+      const hoverTarget = sliderOuter || track;
+      hoverTarget.addEventListener("mouseenter", stopAutoPlay);
+      hoverTarget.addEventListener("mouseleave", startAutoPlay);
+      startAutoPlay();
+    }
 
     window.addEventListener("resize", () => initSlider());
     initSlider();
@@ -569,6 +630,11 @@ document.addEventListener("DOMContentLoaded", () => {
       "offers-prev-btn",
       "offers-next-btn",
       "offer-product-slide",
+      {
+        maxVisible: 4,
+        autoPlay: true,
+        autoPlayDelay: 4000,
+      },
     );
 
     const sliderOuter = offersTrack.closest(".deals-slider-outer");

@@ -779,6 +779,13 @@
   }
 }
 
+@media (max-width: 768px) {
+  .coupons-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
 @media (max-width: 576px) {
   .offers-title {
     font-size: 26px;
@@ -806,16 +813,30 @@
   }
   .coupon-card {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    text-align: center;
   }
   .coupon-icon-wrapper {
     width: 44px;
     height: 44px;
     font-size: 16px;
   }
+  .coupon-details {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    gap: 12px;
+  }
   .coupon-footer-row {
     width: 100%;
+    justify-content: center;
+  }
+  .coupon-btn {
+    align-self: stretch;
+    text-align: center;
+    margin-top: 4px;
   }
   .offer-filter-column {
     padding: 10px;
