@@ -500,6 +500,54 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1000);
   }
 
+  // --- Categories Page: Sidebar Filter ---
+  const sidebarList = document.getElementById("sidebar-category-list");
+  const categoryGrid = document.getElementById("categories-grid");
+  const categoriesCount = document.getElementById("categories-count");
+  const emptyState = document.getElementById("categories-empty-state");
+
+  if (sidebarList && categoryGrid) {
+    const sidebarItems = sidebarList.querySelectorAll(".sidebar-category-item");
+    const gridCards = categoryGrid.querySelectorAll(".category-grid-card");
+
+    sidebarItems.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        const selected = item.getAttribute("data-category");
+
+        // Update active state in sidebar
+        sidebarItems.forEach((i) => i.classList.remove("active"));
+        item.classList.add("active");
+
+        // Filter grid cards
+        let visibleCount = 0;
+        gridCards.forEach((card) => {
+          const isMatch =
+            selected === "all" ||
+            card.getAttribute("data-category") === selected;
+          card.classList.toggle("is-hidden", !isMatch);
+          if (isMatch) visibleCount++;
+        });
+
+        // Update count label & empty state
+        if (categoriesCount) {
+          categoriesCount.textContent =
+            selected === "all"
+              ? "16 Categories"
+              : `${visibleCount} ${visibleCount === 1 ? "Category" : "Categories"}`;
+        }
+        if (emptyState) {
+          emptyState.style.display = visibleCount === 0 ? "block" : "none";
+        }
+
+        // Smooth scroll the grid into view on smaller screens
+        if (window.innerWidth <= 850) {
+          categoryGrid.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+  }
+
   // --- Newsletter Subscription Form Handler ---
   const homeNewsletterForm = document.getElementById("home-newsletter-form");
   const newsletterSuccessMsg = document.getElementById(

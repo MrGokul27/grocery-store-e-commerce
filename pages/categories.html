@@ -22,6 +22,8 @@
     />
     <!-- Main CSS (relative path from pages/ directory) -->
     <link rel="stylesheet" href="../assets/css/styles.css" />
+    <!-- Categories Page CSS -->
+    <link rel="stylesheet" href="../assets/css/categories.css" />
     <!-- JavaScript Component Loader -->
     <script src="../assets/js/script.js" defer></script>
   </head>
@@ -29,41 +31,599 @@
     <!-- Reusable Custom Header -->
     <custom-header></custom-header>
 
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-bar">
+      <div class="container">
+        <nav class="breadcrumb-nav" aria-label="breadcrumb">
+          <a href="../index.html" class="breadcrumb-link">
+            <i class="fa-solid fa-house" style="color: #439a3a"></i> Home
+          </a>
+          <span class="breadcrumb-separator">
+            <i class="fa-solid fa-chevron-right"></i>
+          </span>
+          <span class="breadcrumb-current">All Categories</span>
+        </nav>
+      </div>
+    </div>
+
     <!-- Page Content -->
-    <main
-      style="
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 0 24px;
-        flex-grow: 1;
-        width: 100%;
-      "
-    >
-      <div
-        style="
-          background-color: var(--bg-white);
-          border-radius: 12px;
-          padding: 40px;
-          border: 1px solid var(--border-color);
-          box-shadow: var(--shadow-sm);
-        "
-      >
-        <h1
-          style="
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 16px;
-          "
-        >
-          Product Categories
-        </h1>
-        <p style="color: var(--text-medium); font-size: 15px; line-height: 1.6">
-          Explore a wide range of grocery groups: Fruits & Vegetables,
-          Beverages, Bakery, Meat, and Pantry staples.
-        </p>
+    <main class="categories-page">
+      <div class="container">
+        <div class="categories-page-layout">
+          <!-- ============ Sidebar ============ -->
+          <aside class="categories-sidebar">
+            <ul class="sidebar-category-list" id="sidebar-category-list">
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item active"
+                  data-category="all"
+                >
+                  <i class="fa-solid fa-table-cells-large"></i>
+                  <span>All Categories</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item"
+                  data-category="Fruits & Vegetables"
+                >
+                  <i class="fa-solid fa-carrot"></i>
+                  <span>Fruits & Vegetables</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item"
+                  data-category="Dairy & Eggs"
+                >
+                  <i class="fa-solid fa-droplet"></i>
+                  <span>Dairy & Eggs</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item"
+                  data-category="Beverages"
+                >
+                  <i class="fa-solid fa-mug-saucer"></i>
+                  <span>Beverages</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item"
+                  data-category="Snacks & Munchies"
+                >
+                  <i class="fa-solid fa-cookie-bite"></i>
+                  <span>Snacks & Munchies</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item"
+                  data-category="Grocery & Staples"
+                >
+                  <i class="fa-solid fa-bag-shopping"></i>
+                  <span>Grocery & Staples</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item"
+                  data-category="Cooking Essentials"
+                >
+                  <i class="fa-solid fa-kitchen-set"></i>
+                  <span>Cooking Essentials</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item"
+                  data-category="Personal Care"
+                >
+                  <i class="fa-solid fa-pump-soap"></i>
+                  <span>Personal Care</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item"
+                  data-category="Home Care"
+                >
+                  <i class="fa-solid fa-house-chimney"></i>
+                  <span>Home Care</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item"
+                  data-category="Baby Care"
+                >
+                  <i class="fa-solid fa-baby"></i>
+                  <span>Baby Care</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item"
+                  data-category="Bakery & Biscuits"
+                >
+                  <i class="fa-solid fa-bread-slice"></i>
+                  <span>Bakery & Biscuits</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item"
+                  data-category="Meat, Fish & Eggs"
+                >
+                  <i class="fa-solid fa-fish"></i>
+                  <span>Meat, Fish & Eggs</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item"
+                  data-category="Pet Care"
+                >
+                  <i class="fa-solid fa-paw"></i>
+                  <span>Pet Care</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item"
+                  data-category="Organic & Healthy"
+                >
+                  <i class="fa-solid fa-leaf"></i>
+                  <span>Organic & Healthy</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="sidebar-category-item"
+                  data-category="Dry Fruits & Nuts"
+                >
+                  <i class="fa-solid fa-seedling"></i>
+                  <span>Dry Fruits & Nuts</span>
+                </a>
+              </li>
+            </ul>
+
+            <!-- Help / Contact Card -->
+            <div class="sidebar-help-card">
+              <div class="sidebar-help-icon">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </div>
+              <h4 class="sidebar-help-title">Can't find what you need?</h4>
+              <p class="sidebar-help-text">We're here to help you.</p>
+              <a href="#" class="btn-sidebar-help">Contact Us</a>
+            </div>
+          </aside>
+
+          <!-- ============ Main Content ============ -->
+          <div class="categories-main-content">
+            <!-- Hero Banner -->
+            <section class="hero-section categories-hero-section">
+              <div class="hero-banner">
+                <div class="row align-items-center g-0">
+                  <div class="col-lg-7 hero-content text-start">
+                    <span class="hero-subtitle">Fresh. Local. Delivered.</span>
+                    <h1 class="hero-title">Your Daily Grocery Essentials</h1>
+                    <p class="hero-text">
+                      Wide range of fresh products at best prices. Fast delivery
+                      to your doorstep.
+                    </p>
+                  </div>
+                  <div class="col-lg-5">
+                    <div class="hero-illustration">
+                      <img
+                        src="../assets/images/home/Ellipse 1.webp"
+                        alt="Circle Graphic background 1"
+                        class="hero-ellipse-1"
+                      />
+                      <img
+                        src="../assets/images/home/hero-veg-basket.webp"
+                        alt="Fresh Vegetable Basket"
+                        class="hero-basket-img"
+                      />
+                      <img
+                        src="../assets/images/home/leaves.webp"
+                        alt="Floating Green Leaves"
+                        class="hero-leaves"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Shop by Categories Grid -->
+            <section class="categories-grid-section">
+              <div class="categories-grid-header">
+                <h2 class="categories-grid-title">Shop by Categories</h2>
+                <span class="categories-grid-count" id="categories-count"
+                  >16 Categories</span
+                >
+              </div>
+
+              <div class="categories-grid" id="categories-grid">
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Fruits & Vegetables"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-01.webp"
+                      alt="Fruits & Vegetables"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Fruits & Vegetables</h3>
+                  <p class="category-grid-count-text">120+ Products</p>
+                </a>
+
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Dairy & Eggs"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-02.webp"
+                      alt="Dairy & Eggs"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Dairy & Eggs</h3>
+                  <p class="category-grid-count-text">85+ Products</p>
+                </a>
+
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Beverages"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-03.webp"
+                      alt="Beverages"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Beverages</h3>
+                  <p class="category-grid-count-text">70+ Products</p>
+                </a>
+
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Snacks & Munchies"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-04.webp"
+                      alt="Snacks & Munchies"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Snacks & Munchies</h3>
+                  <p class="category-grid-count-text">150+ Products</p>
+                </a>
+
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Grocery & Staples"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-05.webp"
+                      alt="Grocery & Staples"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Grocery & Staples</h3>
+                  <p class="category-grid-count-text">200+ Products</p>
+                </a>
+
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Cooking Essentials"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-06.webp"
+                      alt="Cooking Essentials"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Cooking Essentials</h3>
+                  <p class="category-grid-count-text">180+ Products</p>
+                </a>
+
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Personal Care"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-07.webp"
+                      alt="Personal Care"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Personal Care</h3>
+                  <p class="category-grid-count-text">120+ Products</p>
+                </a>
+
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Home Care"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-08.webp"
+                      alt="Home Care"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Home Care</h3>
+                  <p class="category-grid-count-text">80+ Products</p>
+                </a>
+
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Baby Care"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-09.webp"
+                      alt="Baby Care"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Baby Care</h3>
+                  <p class="category-grid-count-text">90+ Products</p>
+                </a>
+
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Bakery & Biscuits"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-10.webp"
+                      alt="Bakery & Biscuits"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Bakery & Biscuits</h3>
+                  <p class="category-grid-count-text">110+ Products</p>
+                </a>
+
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Meat, Fish & Eggs"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-11.webp"
+                      alt="Meat, Fish & Eggs"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Meat, Fish & Eggs</h3>
+                  <p class="category-grid-count-text">60+ Products</p>
+                </a>
+
+                <a href="#" class="category-grid-card" data-category="Pet Care">
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-12.webp"
+                      alt="Pet Care"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Pet Care</h3>
+                  <p class="category-grid-count-text">50+ Products</p>
+                </a>
+
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Organic & Healthy"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-13.webp"
+                      alt="Organic & Healthy"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Organic & Healthy</h3>
+                  <p class="category-grid-count-text">70+ Products</p>
+                </a>
+
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Dry Fruits & Nuts"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-14.webp"
+                      alt="Dry Fruits & Nuts"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Dry Fruits & Nuts</h3>
+                  <p class="category-grid-count-text">95+ Products</p>
+                </a>
+
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Kitchen Appliances"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-15.webp"
+                      alt="Kitchen Appliances"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Kitchen Appliances</h3>
+                  <p class="category-grid-count-text">40+ Products</p>
+                </a>
+
+                <a
+                  href="#"
+                  class="category-grid-card"
+                  data-category="Cleaning Essentials"
+                >
+                  <div class="category-grid-img-box">
+                    <img
+                      src="../assets/images/categories/categories-image-16.webp"
+                      alt="Cleaning Essentials"
+                    />
+                  </div>
+                  <h3 class="category-grid-name">Cleaning Essentials</h3>
+                  <p class="category-grid-count-text">60+ Products</p>
+                </a>
+              </div>
+
+              <!-- Empty state shown when a sidebar filter matches nothing in the grid -->
+              <div
+                class="categories-empty-state"
+                id="categories-empty-state"
+                style="display: none"
+              >
+                <i class="fa-solid fa-box-open"></i>
+                <p>No matching category found.</p>
+              </div>
+            </section>
+          </div>
+        </div>
       </div>
     </main>
+
+    <!-- Bottom Features & Newsletter Section (unchanged, reused from Home) -->
+    <section class="footer-features-newsletter-section">
+      <!-- 1. Features Row -->
+      <div class="container home-bottom-features mb-5">
+        <div
+          class="row row-cols-1 row-cols-md-2 row-cols-lg-5 g-0 justify-content-between"
+        >
+          <div class="col">
+            <div class="categories-bottom-feature-card">
+              <div class="categories-bottom-feature-icon-box">
+                <i class="fa-solid fa-truck"></i>
+              </div>
+              <div class="bottom-feature-content">
+                <h4 class="bottom-feature-title">Free delivery</h4>
+                <p class="bottom-feature-description">On orders over $40</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="categories-bottom-feature-card">
+              <div class="categories-bottom-feature-icon-box">
+                <i class="fa-solid fa-leaf"></i>
+              </div>
+              <div class="bottom-feature-content">
+                <h4 class="bottom-feature-title">Fresh guarantee</h4>
+                <p class="bottom-feature-description">Or fully refunded</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="categories-bottom-feature-card">
+              <div class="categories-bottom-feature-icon-box">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div class="bottom-feature-content">
+                <h4 class="bottom-feature-title">Secure payment</h4>
+                <p class="bottom-feature-description">Encrypted checkout</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="categories-bottom-feature-card">
+              <div class="categories-bottom-feature-icon-box">
+                <i class="fa-solid fa-headset"></i>
+              </div>
+              <div class="bottom-feature-content">
+                <h4 class="bottom-feature-title">24/7 support</h4>
+                <p class="bottom-feature-description">Real humans, always</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="categories-bottom-feature-card">
+              <div class="categories-bottom-feature-icon-box">
+                <i class="fa-solid fa-arrow-rotate-left"></i>
+              </div>
+              <div class="bottom-feature-content">
+                <h4 class="bottom-feature-title">Easy returns</h4>
+                <p class="bottom-feature-description">No questions asked</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Newsletter Subscription Banner -->
+      <div class="container">
+        <div class="newsletter-banner-card">
+          <div class="row align-items-center">
+            <div class="col-lg-7 col-md-8 position-relative z-3">
+              <h3 class="newsletter-title">Subscribe to our Newsletter</h3>
+              <p class="newsletter-subtitle">
+                Get the best offers & updates straight to your inbox.
+              </p>
+              <form
+                class="newsletter-form d-flex gap-2"
+                id="home-newsletter-form"
+              >
+                <input
+                  type="email"
+                  class="form-control newsletter-input"
+                  placeholder="Enter your email address"
+                  required
+                />
+                <button type="submit" class="btn btn-subscribe">
+                  Subscribe
+                </button>
+              </form>
+              <div class="newsletter-success-msg" id="newsletter-success-msg">
+                <i class="fa-solid fa-circle-check"></i> Thank you for
+                subscribing! Check your inbox for exclusive updates.
+              </div>
+            </div>
+          </div>
+          <div class="newsletter-visuals-container">
+            <img
+              src="../assets/images/home/leaves.webp"
+              alt="Floating Leaves background"
+              class="newsletter-leaves-bg"
+            />
+            <img
+              src="../assets/images/newsletter-image.webp"
+              alt="Fresh Groceries Bag"
+              class="newsletter-bag-img"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Reusable Custom Footer -->
     <custom-footer></custom-footer>
