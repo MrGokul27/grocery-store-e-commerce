@@ -22,6 +22,8 @@
     />
     <!-- Main CSS (relative path from pages/ directory) -->
     <link rel="stylesheet" href="../assets/css/styles.css" />
+    <!-- Best Sellers CSS -->
+    <link rel="stylesheet" href="../assets/css/best-sellers.css" />
     <!-- JavaScript Component Loader -->
     <script src="../assets/js/script.js" defer></script>
   </head>
@@ -29,39 +31,273 @@
     <!-- Reusable Custom Header -->
     <custom-header></custom-header>
 
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-bar">
+      <div class="container">
+        <nav class="breadcrumb-nav" aria-label="breadcrumb">
+          <a href="../index.html" class="breadcrumb-link">
+            <i class="fa-solid fa-house" style="color: #439a3a"></i> Home
+          </a>
+          <span class="breadcrumb-separator">
+            <i class="fa-solid fa-chevron-right"></i>
+          </span>
+          <span class="breadcrumb-current">Best Sellers</span>
+        </nav>
+      </div>
+    </div>
+
     <!-- Page Content -->
-    <main
-      style="
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 0 24px;
-        flex-grow: 1;
-        width: 100%;
-      "
-    >
-      <div
-        style="
-          background-color: var(--bg-white);
-          border-radius: 12px;
-          padding: 40px;
-          border: 1px solid var(--border-color);
-          box-shadow: var(--shadow-sm);
-        "
-      >
-        <h1
-          style="
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 16px;
-          "
-        >
-          Best Selling Products
-        </h1>
-        <p style="color: var(--text-medium); font-size: 15px; line-height: 1.6">
-          Browse our highest-rated and most popular grocery items, handpicked by
-          our customers.
-        </p>
+    <main class="container my-4 flex-grow-1">
+      <!-- Premium Hero Banner -->
+      <section class="best-sellers-hero">
+        <div class="hero-content-box">
+          <h1>Best Sellers</h1>
+          <p>
+            Explore our most loved and top-rated products chosen by our
+            customers.
+          </p>
+        </div>
+        <div class="hero-illustration-box">
+          <img
+            src="../assets/images/home/leaves.webp"
+            alt="Floating Leaves background"
+            class="hero-leaves-bg"
+          />
+          <img
+            src="../assets/images/offers/offers-banner-image.webp"
+            alt="Fresh Groceries Basket"
+            class="hero-basket-img"
+          />
+        </div>
+      </section>
+
+      <!-- Features Bar -->
+      <section class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-circle">
+            <i class="fa-regular fa-star"></i>
+          </div>
+          <div class="feature-info">
+            <span class="feature-title">Top Rated Products</span>
+            <span class="feature-desc">Loved by thousands of customers</span>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-circle">
+            <i class="fa-solid fa-percent"></i>
+          </div>
+          <div class="feature-info">
+            <span class="feature-title">Best Prices</span>
+            <span class="feature-desc">Unbeatable deals every day</span>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-circle">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div class="feature-info">
+            <span class="feature-title">High Quality</span>
+            <span class="feature-desc">100% fresh & authentic</span>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-circle">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+          <div class="feature-info">
+            <span class="feature-title">Fast Delivery</span>
+            <span class="feature-desc">Quick delivery to your doorstep</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Grid Layout for Filters & Main Products -->
+      <div class="best-sellers-layout">
+        <!-- Sidebar Column -->
+        <aside class="filter-sidebar">
+          <!-- Sidebar Header -->
+          <div class="sidebar-header">
+            <h2>Filters</h2>
+            <button class="btn-clear-all" id="btn-clear-all">Clear All</button>
+          </div>
+
+          <!-- Category Filter -->
+          <div class="filter-section">
+            <h3 class="filter-section-title">Category</h3>
+            <ul class="filter-options-list" id="category-filter-list">
+              <li class="filter-option active" data-category="all">
+                <span class="circle-indicator"></span>
+                <span>All Categories</span>
+              </li>
+              <li class="filter-option" data-category="Fruits & Vegetables">
+                <span class="circle-indicator"></span>
+                <span>Fruits & Vegetables</span>
+              </li>
+              <li class="filter-option" data-category="Dairy & Eggs">
+                <span class="circle-indicator"></span>
+                <span>Dairy & Eggs</span>
+              </li>
+              <li class="filter-option" data-category="Beverages">
+                <span class="circle-indicator"></span>
+                <span>Beverages</span>
+              </li>
+              <li class="filter-option" data-category="Grocery & Staples">
+                <span class="circle-indicator"></span>
+                <span>Grocery & Staples</span>
+              </li>
+              <li class="filter-option" data-category="Snacks & Munchies">
+                <span class="circle-indicator"></span>
+                <span>Snacks & Munchies</span>
+              </li>
+              <li class="filter-option" data-category="Personal Care">
+                <span class="circle-indicator"></span>
+                <span>Personal Care</span>
+              </li>
+              <li class="filter-option" data-category="Home Care">
+                <span class="circle-indicator"></span>
+                <span>Home Care</span>
+              </li>
+              <li class="filter-option" data-category="Baby Care">
+                <span class="circle-indicator"></span>
+                <span>Baby Care</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Sort Us Filter -->
+          <div class="filter-section">
+            <h3 class="filter-section-title">Sort us</h3>
+            <ul class="filter-options-list" id="sidebar-sort-list">
+              <li class="filter-option active" data-sort="popular">
+                <span class="circle-indicator"></span>
+                <span>Most Popular</span>
+              </li>
+              <li class="filter-option" data-sort="rated">
+                <span class="circle-indicator"></span>
+                <span>Top Rated</span>
+              </li>
+              <li class="filter-option" data-sort="selling">
+                <span class="circle-indicator"></span>
+                <span>Best Selling</span>
+              </li>
+              <li class="filter-option" data-sort="newest">
+                <span class="circle-indicator"></span>
+                <span>Newest First</span>
+              </li>
+              <li class="filter-option" data-sort="price-asc">
+                <span class="circle-indicator"></span>
+                <span>Price: Low to High</span>
+              </li>
+              <li class="filter-option" data-sort="price-desc">
+                <span class="circle-indicator"></span>
+                <span>Price: High to Low</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Customer Rating Filter -->
+          <div class="filter-section">
+            <h3 class="filter-section-title">Customer Rating</h3>
+            <ul class="filter-options-list" id="rating-filter-list">
+              <li class="filter-option" data-rating="4.5">
+                <span class="circle-indicator"></span>
+                <span class="stars-display">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star-half-stroke"></i>
+                </span>
+                <span class="rating-count-label">4.5 & above (120)</span>
+              </li>
+              <li class="filter-option" data-rating="4.0">
+                <span class="circle-indicator"></span>
+                <span class="stars-display">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-regular fa-star"></i>
+                </span>
+                <span class="rating-count-label">4.0 & above (268)</span>
+              </li>
+              <li class="filter-option" data-rating="3.0">
+                <span class="circle-indicator"></span>
+                <span class="stars-display">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-regular fa-star"></i>
+                  <i class="fa-regular fa-star"></i>
+                </span>
+                <span class="rating-count-label">3.0 & above (412)</span>
+              </li>
+              <li class="filter-option" data-rating="2.0">
+                <span class="circle-indicator"></span>
+                <span class="stars-display">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-regular fa-star"></i>
+                  <i class="fa-regular fa-star"></i>
+                  <i class="fa-regular fa-star"></i>
+                </span>
+                <span class="rating-count-label">2.0 & above (895)</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Why Bestsellers FAQ Banner -->
+          <div class="sidebar-faq-box">
+            <div class="faq-icon-wrapper">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </div>
+            <h4 class="faq-title">Why these are bestsellers?</h4>
+            <p class="faq-desc">
+              These products are highly rated, frequently bought, and loved by
+              our customers.
+            </p>
+          </div>
+        </aside>
+
+        <!-- Main Product Section -->
+        <section class="main-content-column">
+          <!-- Content Header -->
+          <div class="content-area-header">
+            <div class="results-counter" id="results-counter">
+              Showing 1-12 of 48 results
+            </div>
+            <div class="sort-by-select-box">
+              <span>Sort by:</span>
+              <select class="sort-select" id="sort-by-select">
+                <option value="popular">Most Popular</option>
+                <option value="rated">Top Rated</option>
+                <option value="selling">Best Selling</option>
+                <option value="newest">Newest First</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Product Cards Grid -->
+          <div class="products-grid" id="bestsellers-products-grid">
+            <!-- Dynamically populated via JS -->
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-results-box" id="empty-results-box">
+            <i class="fa-regular fa-face-frown"></i>
+            <h3>No products found</h3>
+            <p>
+              Try adjusting your search filters or click "Clear All" to reset.
+            </p>
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination-wrapper" id="pagination-wrapper">
+            <!-- Dynamically populated via JS -->
+          </div>
+        </section>
       </div>
     </main>
 

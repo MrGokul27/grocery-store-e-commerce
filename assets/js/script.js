@@ -874,4 +874,491 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 1000);
     });
   }
+
+  // =============================================================
+  // --- Best Sellers Page Logic ---
+  // =============================================================
+  const productsGrid = document.getElementById("bestsellers-products-grid");
+  if (productsGrid) {
+    // 1. Data Setup (48 products)
+    const baseProducts = [
+      {
+        name: "Premium Bananas",
+        category: "Fruits & Vegetables",
+        qty: "1 Dozen",
+        price: 45,
+        originalPrice: 45,
+        rating: 4.8,
+        reviews: 120,
+        image: "../assets/images/home/home-best-seller-img-1.webp",
+        popularScore: 98,
+        sales: 340,
+        dateAdded: "2026-07-15",
+      },
+      {
+        name: "Amul Fresh Milk",
+        category: "Dairy & Eggs",
+        qty: "1 L",
+        price: 52,
+        originalPrice: 61,
+        rating: 4.7,
+        reviews: 96,
+        image: "../assets/images/home/home-top-deals-2-amul-fresh-milk.webp",
+        popularScore: 95,
+        sales: 290,
+        dateAdded: "2026-07-20",
+      },
+      {
+        name: "India Gate Basmati Rice",
+        category: "Grocery & Staples",
+        qty: "1 Kg",
+        price: 112,
+        originalPrice: 136,
+        rating: 4.6,
+        reviews: 78,
+        image:
+          "../assets/images/home/home-top-deals-4-india-gate-basmati-rice.webp",
+        popularScore: 92,
+        sales: 250,
+        dateAdded: "2026-08-01",
+      },
+      {
+        name: "Farm Eggs (White)",
+        category: "Dairy & Eggs",
+        qty: "6 pcs",
+        price: 30,
+        originalPrice: 30,
+        rating: 4.8,
+        reviews: 110,
+        image: "../assets/images/home/home-best-seller-img-2.webp",
+        popularScore: 97,
+        sales: 320,
+        dateAdded: "2026-08-05",
+      },
+    ];
+
+    const allBestsellers = [];
+    for (let i = 0; i < 48; i++) {
+      const base = baseProducts[i % baseProducts.length];
+      let name = base.name;
+      let category = base.category;
+      let price = base.price;
+      let originalPrice = base.originalPrice;
+      let rating = base.rating;
+      let reviews = base.reviews + ((i * 4) % 31);
+      let image = base.image;
+      let qty = base.qty;
+
+      // Inject other categories so sidebar filters are fully functional
+      if (i >= 8 && i < 16) {
+        if (base.name === "Premium Bananas") {
+          name = "Fresh Organic Bananas";
+          price = 48;
+          originalPrice = 48;
+        } else if (base.name === "Amul Fresh Milk") {
+          name = "Mother Dairy Cow Milk";
+          price = 50;
+          originalPrice = 58;
+        }
+      } else if (i >= 16 && i < 24) {
+        if (i % 2 === 0) {
+          name = "Nescafe Classic Coffee Packet";
+          category = "Beverages";
+          qty = "100g";
+          price = 185;
+          originalPrice = 210;
+          image = "../assets/images/home/home-best-seller-img-5.webp";
+          rating = 4.5;
+        } else {
+          name = "Taj Mahal Premium Tea";
+          category = "Beverages";
+          qty = "250g";
+          price = 145;
+          originalPrice = 160;
+          image = "../assets/images/home/home-best-seller-img-5.webp";
+          rating = 4.6;
+        }
+      } else if (i >= 24 && i < 32) {
+        if (i % 2 === 0) {
+          name = "Lay's Classic Salted Chips";
+          category = "Snacks & Munchies";
+          qty = "50g";
+          price = 20;
+          originalPrice = 20;
+          image =
+            "../assets/images/home/home-top-deals-5-lay's-classic-salted.webp";
+          rating = 4.7;
+        } else {
+          name = "Kurkure Masala Munch Crisps";
+          category = "Snacks & Munchies";
+          qty = "90g";
+          price = 30;
+          originalPrice = 30;
+          image =
+            "../assets/images/home/home-top-deals-5-lay's-classic-salted.webp";
+          rating = 4.4;
+        }
+      } else if (i >= 32 && i < 40) {
+        if (i % 2 === 0) {
+          name = "Dettol Soothing Liquid Handwash";
+          category = "Personal Care";
+          qty = "200ml";
+          price = 85;
+          originalPrice = 99;
+          image = "../assets/images/home/home-best-seller-img-4.webp";
+          rating = 4.6;
+        } else {
+          name = "Vim Lemon Dishwash Gel";
+          category = "Home Care";
+          qty = "500ml";
+          price = 105;
+          originalPrice = 115;
+          image = "../assets/images/home/home-best-seller-img-4.webp";
+          rating = 4.5;
+        }
+      } else if (i >= 40) {
+        name = "Huggies Sensitive Baby Wipes";
+        category = "Baby Care";
+        qty = "80 pcs";
+        price = 120;
+        originalPrice = 150;
+        image = "../assets/images/home/home-best-seller-img-2.webp";
+        rating = 4.7;
+      }
+
+      allBestsellers.push({
+        id: i + 1,
+        name,
+        category,
+        qty,
+        price,
+        originalPrice,
+        rating,
+        reviews,
+        image,
+        tag: "Bestseller",
+        popularScore: 100 - i,
+        sales: 450 - i * 6,
+        dateAdded: new Date(2026, 7, 1 + (i % 28)).toISOString().split("T")[0],
+      });
+    }
+
+    // 2. State management variables
+    let currentCategory = "all";
+    let currentSort = "popular";
+    let minRating = 0;
+    let currentPage = 1;
+    const itemsPerPage = 12;
+    const wishlist = new Set();
+
+    // 3. Select DOM Elements
+    const resultsCounter = document.getElementById("results-counter");
+    const emptyState = document.getElementById("empty-results-box");
+    const paginationWrapper = document.getElementById("pagination-wrapper");
+    const sortBySelect = document.getElementById("sort-by-select");
+    const btnClearAll = document.getElementById("btn-clear-all");
+
+    const categoryListItems = document.querySelectorAll(
+      "#category-filter-list .filter-option",
+    );
+    const sidebarSortItems = document.querySelectorAll(
+      "#sidebar-sort-list .filter-option",
+    );
+    const ratingFilterItems = document.querySelectorAll(
+      "#rating-filter-list .filter-option",
+    );
+
+    // 4. Render Function
+    function render() {
+      // A. Filter products
+      let filtered = allBestsellers.filter((product) => {
+        const matchesCategory =
+          currentCategory === "all" || product.category === currentCategory;
+        const matchesRating = minRating === 0 || product.rating >= minRating;
+        return matchesCategory && matchesRating;
+      });
+
+      // B. Sort products
+      filtered.sort((a, b) => {
+        if (currentSort === "price-asc") {
+          return a.price - b.price;
+        } else if (currentSort === "price-desc") {
+          return b.price - a.price;
+        } else if (currentSort === "rated") {
+          return b.rating - a.rating || b.reviews - a.reviews;
+        } else if (currentSort === "selling") {
+          return b.sales - a.sales;
+        } else if (currentSort === "newest") {
+          return new Date(b.dateAdded) - new Date(a.dateAdded);
+        } else {
+          // Default: popular
+          return b.popularScore - a.popularScore;
+        }
+      });
+
+      // C. Handle Pagination calculations
+      const totalItems = filtered.length;
+      const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+      if (currentPage > totalPages) {
+        currentPage = 1;
+      }
+
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+      const paginatedItems = filtered.slice(startIndex, endIndex);
+
+      // D. Update counter label
+      if (totalItems > 0) {
+        resultsCounter.textContent = `Showing ${startIndex + 1}-${endIndex} of ${totalItems} results`;
+        emptyState.style.display = "none";
+        productsGrid.style.display = "grid";
+      } else {
+        resultsCounter.textContent = "Showing 0-0 of 0 results";
+        emptyState.style.display = "block";
+        productsGrid.style.display = "none";
+      }
+
+      // E. Render Product Cards Grid
+      productsGrid.innerHTML = "";
+      paginatedItems.forEach((product) => {
+        const hasDiscount = product.originalPrice > product.price;
+        const discountPct = hasDiscount
+          ? Math.round(
+              ((product.originalPrice - product.price) /
+                product.originalPrice) *
+                100,
+            )
+          : 0;
+        const isWishlisted = wishlist.has(product.id);
+
+        const card = document.createElement("div");
+        card.className = "bestseller-card";
+        card.innerHTML = `
+          <span class="bestseller-tag">${product.tag}</span>
+          <button class="bestseller-wishlist-btn ${isWishlisted ? "active" : ""}" data-id="${product.id}" aria-label="Add to Wishlist">
+            <i class="${isWishlisted ? "fa-solid" : "fa-regular"} fa-heart"></i>
+          </button>
+          <div class="bestseller-img-wrapper">
+            <img src="${product.image}" alt="${product.name}" class="bestseller-img" />
+          </div>
+          <div class="bestseller-card-info">
+            <span class="bestseller-card-category">${product.category}</span>
+            <h3 class="bestseller-card-title">${product.name}</h3>
+            <span class="bestseller-card-qty">${product.qty}</span>
+            <div class="bestseller-card-rating">
+              ${renderStars(product.rating)}
+              <span class="bestseller-rating-count">(${product.reviews})</span>
+            </div>
+            <div class="bestseller-price-wrapper">
+              <span class="bestseller-price-current">₹${product.price}</span>
+              ${hasDiscount ? `<span class="bestseller-price-original">₹${product.originalPrice}</span>` : ""}
+              ${hasDiscount ? `<span class="bestseller-discount-badge">${discountPct}% OFF</span>` : ""}
+            </div>
+            <button class="bestseller-add-btn" data-id="${product.id}">
+              <i class="fa-solid fa-cart-shopping"></i> Add to Cart
+            </button>
+          </div>
+        `;
+        productsGrid.appendChild(card);
+      });
+
+      // F. Render Pagination controls
+      renderPagination(totalPages);
+      setupCardEventListeners();
+    }
+
+    // Star icons renderer helper
+    function renderStars(rating) {
+      let starsHTML = "";
+      const fullStars = Math.floor(rating);
+      const halfStar = rating % 1 >= 0.5;
+
+      for (let i = 1; i <= 5; i++) {
+        if (i <= fullStars) {
+          starsHTML += '<i class="fa-solid fa-star"></i>';
+        } else if (i === fullStars + 1 && halfStar) {
+          starsHTML += '<i class="fa-solid fa-star-half-stroke"></i>';
+        } else {
+          starsHTML += '<i class="fa-regular fa-star"></i>';
+        }
+      }
+      return starsHTML;
+    }
+
+    // Render Pagination Controls
+    function renderPagination(totalPages) {
+      paginationWrapper.innerHTML = "";
+      if (totalPages <= 1) return;
+
+      // Prev Button
+      const prevBtn = document.createElement("button");
+      prevBtn.className = `pagination-btn ${currentPage === 1 ? "disabled" : ""}`;
+      prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+      prevBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          render();
+          scrollToTop();
+        }
+      });
+      paginationWrapper.appendChild(prevBtn);
+
+      // Page numbers
+      for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement("button");
+        pageBtn.className = `pagination-btn ${currentPage === i ? "active" : ""}`;
+        pageBtn.textContent = i;
+        pageBtn.addEventListener("click", () => {
+          currentPage = i;
+          render();
+          scrollToTop();
+        });
+        paginationWrapper.appendChild(pageBtn);
+      }
+
+      // Next Button
+      const nextBtn = document.createElement("button");
+      nextBtn.className = `pagination-btn ${currentPage === totalPages ? "disabled" : ""}`;
+      nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+      nextBtn.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          render();
+          scrollToTop();
+        }
+      });
+      paginationWrapper.appendChild(nextBtn);
+    }
+
+    // Scroll back to page container smoothly on pagination click
+    function scrollToTop() {
+      const banner = document.querySelector(".best-sellers-hero");
+      if (banner) {
+        banner.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    // Handle clicks inside product cards
+    function setupCardEventListeners() {
+      // Wishlist toggling
+      document.querySelectorAll(".bestseller-wishlist-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const id = parseInt(btn.getAttribute("data-id"));
+          const icon = btn.querySelector("i");
+
+          if (wishlist.has(id)) {
+            wishlist.delete(id);
+            btn.classList.remove("active");
+            icon.className = "fa-regular fa-heart";
+          } else {
+            wishlist.add(id);
+            btn.classList.add("active");
+            icon.className = "fa-solid fa-heart";
+
+            // Add subtle click pop animation
+            btn.style.transform = "scale(1.2)";
+            setTimeout(() => (btn.style.transform = "none"), 150);
+          }
+        });
+      });
+
+      // Add to cart buttons interaction
+      document.querySelectorAll(".bestseller-add-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const originalContent = btn.innerHTML;
+          btn.disabled = true;
+          btn.style.backgroundColor = "var(--primary-color)";
+          btn.style.color = "#ffffff";
+          btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Added!';
+
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.style.backgroundColor = "";
+            btn.style.color = "";
+            btn.innerHTML = originalContent;
+          }, 1500);
+        });
+      });
+    }
+
+    // 5. Sidebar Filter Action Listeners
+    // Category Select
+    categoryListItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        categoryListItems.forEach((i) => i.classList.remove("active"));
+        item.classList.add("active");
+        currentCategory = item.getAttribute("data-category");
+        currentPage = 1;
+        render();
+      });
+    });
+
+    // Sidebar Sort Options Select (Syncs with select input)
+    sidebarSortItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        sidebarSortItems.forEach((i) => i.classList.remove("active"));
+        item.classList.add("active");
+        currentSort = item.getAttribute("data-sort");
+        sortBySelect.value = currentSort;
+        currentPage = 1;
+        render();
+      });
+    });
+
+    // Top Select Sort (Syncs with sidebar options)
+    sortBySelect.addEventListener("change", (e) => {
+      currentSort = e.target.value;
+      sidebarSortItems.forEach((i) => {
+        i.classList.toggle(
+          "active",
+          i.getAttribute("data-sort") === currentSort,
+        );
+      });
+      currentPage = 1;
+      render();
+    });
+
+    // Ratings Filter Select
+    ratingFilterItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        const wasActive = item.classList.contains("active");
+        ratingFilterItems.forEach((i) => i.classList.remove("active"));
+
+        if (wasActive) {
+          minRating = 0;
+        } else {
+          item.classList.add("active");
+          minRating = parseFloat(item.getAttribute("data-rating"));
+        }
+        currentPage = 1;
+        render();
+      });
+    });
+
+    // Clear All Filters
+    btnClearAll.addEventListener("click", () => {
+      // Clear values
+      currentCategory = "all";
+      currentSort = "popular";
+      minRating = 0;
+      currentPage = 1;
+
+      // Update UI active states
+      categoryListItems.forEach((i) =>
+        i.classList.toggle("active", i.getAttribute("data-category") === "all"),
+      );
+      sidebarSortItems.forEach((i) =>
+        i.classList.toggle("active", i.getAttribute("data-sort") === "popular"),
+      );
+      ratingFilterItems.forEach((i) => i.classList.remove("active"));
+      sortBySelect.value = "popular";
+
+      render();
+    });
+
+    // Initial render
+    render();
+  }
 });
