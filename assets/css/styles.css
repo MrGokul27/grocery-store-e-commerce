@@ -42,7 +42,16 @@ body {
 }
 
 /* Custom Web Component Wrappers */
-custom-header,
+custom-header {
+  display: block;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1050;
+  background-color: var(--bg-white);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
 custom-footer {
   display: block;
   width: 100%;
@@ -337,8 +346,7 @@ custom-footer {
 .header-nav {
   padding: 10px 0;
   background-color: var(--bg-white);
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 1000;
 }
 
@@ -1408,10 +1416,14 @@ custom-footer {
 }
 
 @media (max-width: 992px) {
+  .header-top {
+    padding: 10px 0;
+  }
+
   .header-top .header-container {
     flex-wrap: wrap;
-    gap: 16px;
-    padding: 12px 16px;
+    gap: 12px;
+    padding: 8px 16px;
   }
 
   .header-search {
@@ -1421,7 +1433,7 @@ custom-footer {
   }
 
   .header-actions {
-    gap: 20px;
+    gap: 16px;
   }
 
   .nav-container {
@@ -1589,8 +1601,17 @@ custom-footer {
 }
 
 @media (max-width: 640px) {
+  .header-top {
+    padding: 6px 0;
+  }
+
+  .header-top .header-container {
+    gap: 8px;
+    padding: 4px 12px;
+  }
+
   .logo-image {
-    height: 32px;
+    height: 30px;
   }
 
   .delivery-info {
@@ -1602,7 +1623,16 @@ custom-footer {
   }
 
   .header-actions {
-    gap: 16px;
+    gap: 12px;
+  }
+
+  .search-input {
+    padding: 8px 52px 8px 16px;
+    font-size: 13.5px;
+  }
+
+  .search-button {
+    width: 44px;
   }
 
   .nav-container {
@@ -1664,10 +1694,6 @@ custom-footer {
   .footer-column.app-downloads {
     flex-direction: column;
     gap: 12px;
-  }
-
-  .app-badge-link {
-    max-width: 100%;
   }
 }
 
