@@ -22,47 +22,340 @@
     />
     <!-- Main CSS (relative path from pages/ directory) -->
     <link rel="stylesheet" href="../assets/css/styles.css" />
+    <!-- Contact page styling -->
+    <link rel="stylesheet" href="../assets/css/contact.css" />
     <!-- JavaScript Component Loader -->
     <script src="../assets/js/script.js" defer></script>
+    <!-- Contact page interactivity script -->
+    <script src="../assets/js/contact.js" defer></script>
   </head>
   <body style="display: flex; flex-direction: column; min-height: 100vh">
     <!-- Reusable Custom Header -->
     <custom-header></custom-header>
 
-    <!-- Page Content -->
-    <main
-      style="
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 0 24px;
-        flex-grow: 1;
-        width: 100%;
-      "
-    >
-      <div
-        style="
-          background-color: var(--bg-white);
-          border-radius: 12px;
-          padding: 40px;
-          border: 1px solid var(--border-color);
-          box-shadow: var(--shadow-sm);
-        "
-      >
-        <h1
-          style="
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 16px;
-          "
-        >
-          Contact Customer Service
-        </h1>
-        <p style="color: var(--text-medium); font-size: 15px; line-height: 1.6">
-          Have questions about shipping, returns, or order tracking? Contact our
-          helpdesk anytime.
-        </p>
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-bar">
+      <div class="container">
+        <nav class="breadcrumb-nav" aria-label="breadcrumb">
+          <a href="../index.html" class="breadcrumb-link">
+            <i class="fa-solid fa-house" style="color: #439a3a"></i> Home
+          </a>
+          <span class="breadcrumb-separator">
+            <i class="fa-solid fa-chevron-right"></i>
+          </span>
+          <span class="breadcrumb-current">Contact Us</span>
+        </nav>
       </div>
+    </div>
+
+    <!-- Page Content -->
+    <main class="container flex-grow-1">
+      <!-- Contact Hero Banner -->
+      <section class="contact-hero">
+        <div class="contact-hero-content">
+          <span class="contact-hero-tag">
+            <i class="fa-solid fa-circle-check"></i> Contact Us
+          </span>
+          <h1 class="contact-hero-title">
+            We're Here to <br />
+            Help You!
+          </h1>
+          <p class="contact-hero-desc">
+            Have a question, suggestion, or need support? <br />
+            Our team is always ready to assist you.
+          </p>
+
+          <div class="contact-hero-features">
+            <div class="hero-feature-item">
+              <div class="hero-feature-icon">
+                <i class="fa-regular fa-clock"></i>
+              </div>
+              <div class="hero-feature-info">
+                <span class="hero-feature-label">Quick Support</span>
+                <span class="hero-feature-sub">Response within 24 hours</span>
+              </div>
+            </div>
+            <div class="hero-feature-item">
+              <div class="hero-feature-icon">
+                <i class="fa-regular fa-face-smile"></i>
+              </div>
+              <div class="hero-feature-info">
+                <span class="hero-feature-label">Friendly Team</span>
+                <span class="hero-feature-sub">We care about you</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-hero-visual">
+          <img
+            src="../assets/images/home/leaves.webp"
+            alt="Floating Leaves background"
+            class="hero-leaves-bg"
+          />
+          <img
+            src="../assets/images/offers/offers-banner-image.webp"
+            alt="Fresh Groceries Basket"
+            class="hero-basket-img"
+          />
+          <img
+            src="../assets/images/computer-headset-bg-img.webp"
+            alt="Support Headset"
+            class="hero-headset-img"
+          />
+        </div>
+      </section>
+
+      <!-- Main Contact Section -->
+      <section class="row mb-5">
+        <!-- Get in Touch Column -->
+        <div class="col-lg-4 col-md-5 mb-4 mb-md-0">
+          <h2 class="contact-section-title">Get in Touch</h2>
+          <p class="contact-section-subtitle">
+            Reach out to us through any of these channels
+          </p>
+
+          <div class="contact-card-container">
+            <!-- Phone Card -->
+            <div class="contact-info-card">
+              <div class="info-card-icon">
+                <i class="fa-solid fa-phone"></i>
+              </div>
+              <div class="info-card-details">
+                <span class="info-card-label">Phone</span>
+                <a href="tel:+911234567890" class="info-card-value"
+                  >+91 12345 67890</a
+                >
+                <span class="info-card-sub">Mon - Sat: 9:00 AM - 6:00 PM</span>
+              </div>
+            </div>
+
+            <!-- Email Card -->
+            <div class="contact-info-card">
+              <div class="info-card-icon">
+                <i class="fa-solid fa-envelope"></i>
+              </div>
+              <div class="info-card-details">
+                <span class="info-card-label">Email</span>
+                <a
+                  href="mailto:support@stacklygrocery.com"
+                  class="info-card-value email-link"
+                  >support@stacklygrocery.com</a
+                >
+                <span class="info-card-sub">Response within 24 hours</span>
+              </div>
+            </div>
+
+            <!-- Address Card -->
+            <div class="contact-info-card">
+              <div class="info-card-icon">
+                <i class="fa-solid fa-location-dot"></i>
+              </div>
+              <div class="info-card-details">
+                <span class="info-card-label">Address</span>
+                <span class="info-card-value"
+                  >123, Green Street, Coimbatore, Tamil Nadu - 641001,
+                  India</span
+                >
+              </div>
+            </div>
+
+            <!-- Working Hours Card -->
+            <div class="contact-info-card">
+              <div class="info-card-icon">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+              </div>
+              <div class="info-card-details">
+                <span class="info-card-label">Working Hours</span>
+                <span class="info-card-value"
+                  >Mon - Sat: 9:00 AM - 7:00 PM</span
+                >
+                <span class="info-card-sub">Sunday: 9:00 AM - 2:00 PM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Send Us a Message Column -->
+        <div class="col-lg-8 col-md-7">
+          <h2 class="contact-section-title">Send Us a Message</h2>
+          <p class="contact-section-subtitle">
+            Fill out the form below and we'll get back to you.
+          </p>
+
+          <div class="contact-form-card">
+            <form id="contact-us-form" novalidate>
+              <div class="row">
+                <!-- Full Name -->
+                <div class="col-md-6 form-group-custom">
+                  <label for="contact-name" class="form-label-custom"
+                    >Full Name</label
+                  >
+                  <input
+                    type="text"
+                    id="contact-name"
+                    class="form-control-custom"
+                    placeholder="Enter your name"
+                    required
+                  />
+                </div>
+
+                <!-- Email Address -->
+                <div class="col-md-6 form-group-custom">
+                  <label for="contact-email" class="form-label-custom"
+                    >Email Address</label
+                  >
+                  <input
+                    type="email"
+                    id="contact-email"
+                    class="form-control-custom"
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Phone Number -->
+              <div class="form-group-custom">
+                <label for="contact-phone" class="form-label-custom"
+                  >Phone Number</label
+                >
+                <input
+                  type="tel"
+                  id="contact-phone"
+                  class="form-control-custom"
+                  placeholder="Enter your phone number"
+                  required
+                />
+              </div>
+
+              <!-- Subject -->
+              <div class="form-group-custom">
+                <label for="contact-subject" class="form-label-custom"
+                  >Subject</label
+                >
+                <select
+                  id="contact-subject"
+                  class="form-control-custom form-select-custom"
+                  required
+                >
+                  <option value="" disabled selected>Select a subject</option>
+                  <option value="Billing & Refunds">Billing & Refunds</option>
+                  <option value="Delivery Issue">Delivery Issue</option>
+                  <option value="Product Quality">Product Quality</option>
+                  <option value="General Support">General Support</option>
+                  <option value="Business Inquiry">Business Inquiry</option>
+                </select>
+              </div>
+
+              <!-- Message -->
+              <div class="form-group-custom">
+                <label for="contact-message" class="form-label-custom"
+                  >Message</label
+                >
+                <textarea
+                  id="contact-message"
+                  class="form-control-custom"
+                  placeholder="Type your message here..."
+                  required
+                ></textarea>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn-send-message">
+                <i class="fa-solid fa-paper-plane"></i> Send Message
+              </button>
+
+              <!-- Success Alert -->
+              <div class="form-success-msg" id="form-success-msg">
+                <i class="fa-solid fa-circle-check"></i> Thank you! Your message
+                has been sent successfully. We will get back to you shortly.
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Map Location Section -->
+      <section class="contact-map-wrapper">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.333069150171!2d76.95593847585098!3d11.013535954767222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba859af2f974671%3A0xae36ab677a28e3b2!2sCoimbatore%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin"
+          class="contact-map-iframe"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+
+        <div class="map-location-card">
+          <h3 class="map-card-title">Our Location</h3>
+          <p class="map-card-address">
+            123, Green Street, Coimbatore,<br />Tamil Nadu - 641001, India
+          </p>
+          <a
+            href="https://maps.google.com/?q=123,+Green+Street,+Coimbatore,+Tamil+Nadu+-+641001,+India"
+            target="_blank"
+            class="btn-get-directions"
+          >
+            <i class="fa-solid fa-diamond-turn-right"></i> Get Directions
+          </a>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="faq-section mb-5">
+        <div class="faq-banner">
+          <span class="faq-tag">
+            <i class="fa-solid fa-leaf" style="color: #439a3a"></i> Need Quick
+            Answers?
+          </span>
+          <h2 class="faq-title">Check out our Frequently Asked Questions</h2>
+          <a href="#" class="btn-view-faqs">
+            View FAQs <i class="fa-solid fa-chevron-right"></i>
+          </a>
+        </div>
+
+        <div class="support-features-grid">
+          <!-- Card 1 -->
+          <div class="support-feature-card">
+            <span class="support-icon"><i class="fa-solid fa-truck"></i></span>
+            <h4 class="support-title">Orders & Delivery</h4>
+            <p class="support-desc">
+              Track order status, delivery options, etc.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="support-feature-card">
+            <span class="support-icon"
+              ><i class="fa-solid fa-credit-card"></i
+            ></span>
+            <h4 class="support-title">Payments & Refunds</h4>
+            <p class="support-desc">
+              Refund status, payment modes, issues, etc.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="support-feature-card">
+            <span class="support-icon"
+              ><i class="fa-solid fa-box-open"></i
+            ></span>
+            <h4 class="support-title">Products & Quality</h4>
+            <p class="support-desc">Product details, quality assurance, etc.</p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="support-feature-card support-feature-card-last-card">
+            <span class="support-icon"
+              ><i class="fa-solid fa-circle-user"></i
+            ></span>
+            <h4 class="support-title">Account & Support</h4>
+            <p class="support-desc">
+              Management details, security settings, etc.
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- Newsletter Section -->
