@@ -1361,4 +1361,49 @@ document.addEventListener("DOMContentLoaded", () => {
     // Initial render
     render();
   }
+
+  // --- 404 Page Interactivity ---
+  const errorWrapper = document.querySelector(".error-page-wrapper");
+  const cartCharacter = document.getElementById("cart-character");
+  const errorLeaves = document.querySelectorAll(".error-leaf-wrapper");
+
+  if (cartCharacter) {
+    cartCharacter.addEventListener("click", () => {
+      cartCharacter.classList.add("cart-wobble");
+      setTimeout(() => {
+        cartCharacter.classList.remove("cart-wobble");
+      }, 600);
+    });
+  }
+
+  if (errorWrapper && errorLeaves.length > 0) {
+    errorWrapper.addEventListener("mousemove", (e) => {
+      const { clientX, clientY } = e;
+      const { width, height, left, top } = errorWrapper.getBoundingClientRect();
+
+      // Calculate normalized cursor position relative to the error container
+      const relX = clientX - left;
+      const relY = clientY - top;
+      const moveX = relX / width - 0.5;
+      const moveY = relY / height - 0.5;
+
+      errorLeaves.forEach((leaf, index) => {
+        // Different weights for each leaf to create a natural parallax depth feel
+        const factorX = (index + 1) * 12;
+        const factorY = (index + 1) * 8;
+
+        const x = moveX * factorX;
+        const y = moveY * factorY;
+
+        leaf.style.transform = `translate(${x}px, ${y}px)`;
+      });
+    });
+
+    // Reset positioning when mouse leaves the page area
+    errorWrapper.addEventListener("mouseleave", () => {
+      errorLeaves.forEach((leaf) => {
+        leaf.style.transform = "translate(0px, 0px)";
+      });
+    });
+  }
 });
