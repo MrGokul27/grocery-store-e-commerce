@@ -67,8 +67,8 @@ body.dashboard-body {
 }
 
 .role-delivery-badge {
-  background-color: rgba(13, 110, 253, 0.1);
-  color: #0d6efd;
+  background-color: rgba(25, 135, 84, 0.1);
+  color: #198754;
 }
 
 .sidebar-menu {
@@ -311,8 +311,8 @@ body.dashboard-body {
 }
 
 .stat-icon-delivery {
-  background-color: rgba(13, 110, 253, 0.1);
-  color: #0d6efd;
+  background-color: rgba(25, 135, 84, 0.1);
+  color: #198754;
 }
 
 /* Charts / Content Cards */
