@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - Stackly Grocery</title>
-    <!-- Bootstrap 5 CSS CDN -->
+    <!-- Google Fonts: Inter (Sans-serif) & Playfair Display (Serif) -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,600;1,700&display=swap"
       rel="stylesheet"
     />
     <!-- FontAwesome Icons CDN -->
@@ -20,134 +20,196 @@
       type="image/webp"
       href="../assets/images/stackly-logo.webp"
     />
-    <!-- Main CSS (relative path from pages/ directory) -->
-    <link rel="stylesheet" href="../assets/css/styles.css" />
-    <!-- JavaScript Component Loader -->
-    <script src="../assets/js/script.js" defer></script>
+    <!-- Auth CSS (Relative Path) -->
+    <link rel="stylesheet" href="../assets/css/auth.css" />
   </head>
-  <body style="display: flex; flex-direction: column; min-height: 100vh">
-    <!-- Reusable Custom Header -->
-    <custom-header></custom-header>
-
-    <!-- Page Content -->
-    <main
-      style="
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 0 24px;
-        flex-grow: 1;
-        width: 100%;
-      "
-    >
-      <div
-        style="
-          background-color: var(--bg-white);
-          border-radius: 12px;
-          padding: 40px;
-          border: 1px solid var(--border-color);
-          box-shadow: var(--shadow-sm);
-          max-width: 450px;
-          margin: 40px auto;
-        "
-      >
-        <h1
-          style="
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 24px;
-            text-align: center;
-          "
-        >
-          Login to Account
-        </h1>
-
-        <form style="display: flex; flex-direction: column; gap: 16px">
-          <div style="display: flex; flex-direction: column; gap: 6px">
-            <label
-              style="
-                font-size: 13px;
-                font-weight: 600;
-                color: var(--text-medium);
-              "
-              >Email Address</label
-            >
-            <input
-              type="email"
-              placeholder="enter your email"
-              style="
-                padding: 10px 14px;
-                border: 1px solid var(--border-color);
-                border-radius: 6px;
-                outline: none;
-                font-size: 14px;
-              "
-            />
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 6px">
-            <label
-              style="
-                font-size: 13px;
-                font-weight: 600;
-                color: var(--text-medium);
-              "
-              >Password</label
-            >
-            <input
-              type="password"
-              placeholder="enter password"
-              style="
-                padding: 10px 14px;
-                border: 1px solid var(--border-color);
-                border-radius: 6px;
-                outline: none;
-                font-size: 14px;
-              "
-            />
-          </div>
-          <button
-            type="submit"
-            style="
-              background-color: var(--primary-color);
-              color: white;
-              border: none;
-              padding: 12px;
-              border-radius: 6px;
-              font-weight: 600;
-              cursor: pointer;
-              margin-top: 8px;
-            "
-          >
-            Login
-          </button>
-        </form>
-
-        <p
-          style="
-            margin-top: 20px;
-            text-align: center;
-            font-size: 13px;
-            color: var(--text-light);
-          "
-        >
-          Don't have an account?
-          <a
-            href="register.html"
-            style="
-              color: var(--primary-color);
-              text-decoration: none;
-              font-weight: 600;
-            "
-            >Sign Up</a
-          >
-        </p>
+  <body>
+    <div class="auth-container">
+      <!-- Left Panel: Brand Showcase (Desktop only) -->
+      <div class="auth-left">
+        <div class="auth-left-content">
+          <h1 class="auth-left-title">
+            Fresh.<br />Local.<br /><span class="highlight">Delivered.</span>
+          </h1>
+          <p class="auth-left-subtitle">
+            Wide range of fresh products at best prices. Fast delivery to your
+            doorstep.
+          </p>
+        </div>
       </div>
-    </main>
 
-    <!-- Reusable Custom Footer -->
-    <custom-footer></custom-footer>
+      <!-- Right Panel: Login Form -->
+      <div class="auth-right">
+        <!-- Top Navigation Header -->
+        <div class="auth-right-header">
+          <a href="../index.html" class="auth-brand" id="brand-logo-link">
+            <img
+              src="../assets/images/stackly-logo.webp"
+              alt="Stackly Logo"
+              class="brand-logo"
+            />
+          </a>
+          <div class="header-nav-links">
+            <a href="login.html" class="nav-login-link active">Login</a>
+            <a href="register.html" class="nav-signup-btn">Sign up</a>
+          </div>
+        </div>
 
-    <!-- Bootstrap 5 JS Bundle CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Auth Form Wrapper -->
+        <div class="auth-form-container">
+          <h2 class="form-title">Welcome Back</h2>
+          <p class="form-subtitle">
+            Discover a better way of shopping with Stackly.
+          </p>
+
+          <!-- Social Log In -->
+          <button type="button" class="google-login-btn">
+            <img
+              src="../assets/images/google-icon.webp"
+              alt="Google G Logo"
+              class="google-icon"
+            />
+            <span>Log in with Google</span>
+          </button>
+
+          <!-- Divider -->
+          <div class="form-divider">
+            <span>Or</span>
+          </div>
+
+          <!-- Login Credentials Form -->
+          <form id="login-form" class="auth-form" novalidate autocomplete="on">
+            <!-- Role Selection Field (Grocery Theme Specific) -->
+            <div class="form-group">
+              <label for="user-role" class="form-label">
+                Login As <span class="required-asterisk">*</span>
+              </label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-user-tag input-icon"></i>
+                <select
+                  id="user-role"
+                  name="role"
+                  required
+                  class="form-input select-input"
+                >
+                  <option value="" disabled selected>Select your Role</option>
+                  <option value="customer">Customer (Shop & Order)</option>
+                  <option value="manager">
+                    Store Manager / Vendor (Manage Inventory)
+                  </option>
+                  <option value="delivery">
+                    Delivery Partner (Deliver Orders)
+                  </option>
+                </select>
+                <i class="fa-solid fa-chevron-down select-arrow"></i>
+              </div>
+              <span class="error-feedback" id="role-error"></span>
+            </div>
+
+            <!-- Email Input Field -->
+            <div class="form-group">
+              <label for="user-email" class="form-label">
+                Email Address <span class="required-asterisk">*</span>
+              </label>
+              <div class="input-wrapper">
+                <i class="fa-regular fa-envelope input-icon"></i>
+                <input
+                  type="email"
+                  id="user-email"
+                  name="email"
+                  placeholder="Enter your Email"
+                  required
+                  class="form-input"
+                  autocomplete="email"
+                />
+              </div>
+              <span class="error-feedback" id="email-error"></span>
+            </div>
+
+            <!-- Password Input Field -->
+            <div class="form-group">
+              <label for="user-password" class="form-label">
+                Password <span class="required-asterisk">*</span>
+              </label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-lock input-icon"></i>
+                <input
+                  type="password"
+                  id="user-password"
+                  name="password"
+                  placeholder="Password"
+                  required
+                  class="form-input"
+                  autocomplete="current-password"
+                />
+                <button
+                  type="button"
+                  id="toggle-password"
+                  class="password-toggle-btn"
+                  aria-label="Toggle Password Visibility"
+                >
+                  <i class="fa-regular fa-eye" id="toggle-password-icon"></i>
+                </button>
+              </div>
+              <span class="error-feedback" id="password-error"></span>
+
+              <!-- Real-time Weak Password Validation Indicator -->
+              <div
+                id="password-strength-container"
+                class="password-strength-container hidden"
+              >
+                <div class="strength-bar-wrapper">
+                  <div id="strength-bar" class="strength-bar"></div>
+                </div>
+                <div class="strength-info">
+                  <span id="strength-text" class="strength-text">Weak</span>
+                  <span class="strength-label">Password Strength</span>
+                </div>
+                <ul id="password-requirements" class="password-requirements">
+                  <li id="req-length" class="requirement invalid">
+                    <i class="fa-solid fa-circle-xmark status-icon"></i> At
+                    least 8 characters
+                  </li>
+                  <li id="req-number" class="requirement invalid">
+                    <i class="fa-solid fa-circle-xmark status-icon"></i> At
+                    least 1 number
+                  </li>
+                  <li id="req-special" class="requirement invalid">
+                    <i class="fa-solid fa-circle-xmark status-icon"></i> At
+                    least 1 letter or special character
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Remember Me & Forgot Password Options -->
+            <div class="form-options">
+              <label class="remember-me-container">
+                <input type="checkbox" id="remember-me" name="remember" />
+                <span class="custom-checkbox"></span>
+                <span class="checkbox-label">Remember Me</span>
+              </label>
+              <a href="404.html" class="forgot-password-link"
+                >Forget Password?</a
+              >
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn" id="login-submit-btn">
+              Log in
+            </button>
+          </form>
+
+          <!-- Sign Up Callout -->
+          <p class="signup-prompt">
+            Not member yet?
+            <a href="register.html" class="signup-link">Create an account</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Auth Script (Relative Path) -->
+    <script src="../assets/js/auth.js"></script>
   </body>
 </html>

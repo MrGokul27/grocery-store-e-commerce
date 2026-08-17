@@ -84,21 +84,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const message = messageInput.value.trim();
 
     if (!name || !email || !phone || !subject || !message) {
-      alert("Please fill out all required fields.");
       return;
     }
 
     // Email validation
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(email)) {
-      alert("Please enter a valid email address.");
       emailInput.focus();
       return;
     }
 
     // Phone length validation (standard 10-15 digits for contact)
     if (phone.length < 8) {
-      alert("Please enter a valid phone number (at least 8 digits).");
       phoneInput.focus();
       return;
     }
