@@ -24,8 +24,221 @@
     <link rel="stylesheet" href="./assets/css/styles.css" />
     <!-- Reusable Web Components (Header & Footer) -->
     <script src="./assets/js/script.js" defer></script>
+    <!-- Instant Loading Preloader Styles -->
+    <style id="preloader-style">
+      #preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: radial-gradient(circle at center, #ffffff 0%, #edf7ec 100%);
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+        transition:
+          opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+          visibility 0.5s;
+        visibility: visible;
+      }
+      #preloader.fade-out {
+        opacity: 0;
+        visibility: hidden;
+      }
+      .preloader-content {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        max-width: 320px;
+      }
+      .loader-logo-wrapper {
+        margin-bottom: 8px;
+        animation: logoPulse 2s ease-in-out infinite;
+      }
+      .loader-logo {
+        height: 48px;
+        width: auto;
+        object-fit: contain;
+      }
+      .grocery-loader {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .loader-circle {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        transform: rotate(-90deg);
+      }
+      .circle-bg {
+        fill: none;
+        stroke: rgba(67, 154, 58, 0.08);
+        stroke-width: 4.5px;
+      }
+      .circle-fill {
+        fill: none;
+        stroke: var(--primary-color, #439a3a);
+        stroke-width: 4.5px;
+        stroke-dasharray: 283;
+        stroke-dashoffset: 283;
+        stroke-linecap: round;
+        animation: fillProgress 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      .loader-leaf {
+        position: relative;
+        color: var(--primary-color, #439a3a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: leafPulse 1.6s ease-in-out infinite;
+      }
+      .loader-text h2 {
+        font-family: "Inter", sans-serif;
+        font-size: 26px;
+        font-weight: 800;
+        color: #1e293b;
+        margin: 0;
+        letter-spacing: 0.5px;
+      }
+      .loader-text p {
+        font-family: "Inter", sans-serif;
+        font-size: 13.5px;
+        color: #64748b;
+        margin: 6px 0 0 0;
+        font-weight: 500;
+      }
+      .progress-bar-container {
+        width: 180px;
+        height: 4px;
+        background-color: rgba(67, 154, 58, 0.08);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-top: 8px;
+      }
+      .progress-bar-fill {
+        height: 100%;
+        width: 0%;
+        background-color: var(--primary-color, #439a3a);
+        border-radius: 2px;
+        animation: barProgress 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      @keyframes fillProgress {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+      @keyframes barProgress {
+        to {
+          width: 100%;
+        }
+      }
+      @keyframes logoPulse {
+        0%,
+        100% {
+          transform: scale(1);
+          filter: drop-shadow(0 2px 4px rgba(67, 154, 58, 0.03));
+        }
+        50% {
+          transform: scale(1.04);
+          filter: drop-shadow(0 8px 16px rgba(67, 154, 58, 0.1));
+        }
+      }
+      @keyframes leafPulse {
+        0%,
+        100% {
+          transform: scale(1) rotate(0deg);
+        }
+        50% {
+          transform: scale(1.15) rotate(15deg);
+        }
+      }
+      body.loader-active {
+        overflow: hidden !important;
+        height: 100vh !important;
+      }
+    </style>
   </head>
-  <body style="display: flex; flex-direction: column; min-height: 100vh">
+  <body
+    class="loader-active"
+    style="display: flex; flex-direction: column; min-height: 100vh"
+  >
+    <!-- Premium Theme-Related Preloader -->
+    <div id="preloader">
+      <div class="preloader-content">
+        <div class="loader-logo-wrapper">
+          <img
+            src="./assets/images/stackly-logo.webp"
+            alt="Stackly Logo"
+            class="loader-logo"
+          />
+        </div>
+        <div class="grocery-loader">
+          <svg class="loader-circle" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" class="circle-bg" />
+            <circle cx="50" cy="50" r="45" class="circle-fill" />
+          </svg>
+          <div class="loader-leaf">
+            <!-- Elegant SVG leaf icon -->
+            <svg
+              viewBox="0 0 24 24"
+              width="30"
+              height="30"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M2 22C2 22 8 20 12 16C16 12 22 6 22 2C22 2 16 2 12 6C8 10 2 16 2 22Z"
+                fill="rgba(67, 154, 58, 0.2)"
+              />
+              <path d="M2 22L12 12" />
+              <path d="M12 6C11 8 9 9 9 9" />
+              <path d="M16 10C15 12 13 13 13 13" />
+            </svg>
+          </div>
+        </div>
+        <div class="loader-text">
+          <h2>Stackly</h2>
+          <p>Harvesting fresh essentials...</p>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Controlled Preloader execution
+      (function () {
+        const preloader = document.getElementById("preloader");
+        if (preloader) {
+          // Lock scroll
+          document.body.classList.add("loader-active");
+
+          // Exactly 2 seconds timeout to trigger fade-out
+          setTimeout(function () {
+            preloader.classList.add("fade-out");
+
+            // Allow page scrolling again and remove element from DOM after transition
+            setTimeout(function () {
+              preloader.remove();
+              document.body.classList.remove("loader-active");
+            }, 500);
+          }, 2000);
+        }
+      })();
+    </script>
+
     <!-- Reusable Custom Header Component -->
     <custom-header></custom-header>
 
