@@ -450,6 +450,18 @@ function setupTestimonialSlider(trackId, dotsContainerId, slideClass) {
   }
 }
 
+// Redirect empty/# links to 404 page
+document.addEventListener("click", (e) => {
+  const link = e.target.closest("a");
+  if (!link) return;
+  const href = link.getAttribute("href");
+  if (href === "#" || href === "" || href === null) {
+    e.preventDefault();
+    const root = getRootPrefix();
+    window.location.href = (root || "") + "404.html";
+  }
+});
+
 document.addEventListener("DOMContentLoaded", () => {
   // --- Initialize Sliders ---
   setupInfiniteSlider(

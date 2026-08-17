@@ -2450,6 +2450,10 @@ custom-footer {
     height: 100%;
     width: 100%;
   }
+
+  .footer-features-newsletter-section {
+    padding: 10px 0;
+  }
 }
 
 /* ==========================================

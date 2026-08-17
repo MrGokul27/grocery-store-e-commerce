@@ -66,7 +66,7 @@
 .error-leaf-1 {
   top: 15%;
   left: 8%;
-  width: 32px;
+  width: 520px;
 }
 .error-leaf-1 .error-leaf-img {
   animation: leafSway1 6s ease-in-out infinite alternate;
@@ -75,37 +75,10 @@
 .error-leaf-2 {
   top: 12%;
   right: 12%;
-  width: 45px;
+  width: 450px;
 }
 .error-leaf-2 .error-leaf-img {
   animation: leafSway2 8s ease-in-out infinite alternate;
-}
-
-.error-leaf-3 {
-  bottom: 25%;
-  left: 10%;
-  width: 28px;
-}
-.error-leaf-3 .error-leaf-img {
-  animation: leafSway3 7s ease-in-out infinite alternate;
-}
-
-.error-leaf-4 {
-  top: 45%;
-  right: 35%;
-  width: 36px;
-}
-.error-leaf-4 .error-leaf-img {
-  animation: leafSway1 5s ease-in-out infinite alternate;
-}
-
-.error-leaf-5 {
-  bottom: 40%;
-  left: 45%;
-  width: 24px;
-}
-.error-leaf-5 .error-leaf-img {
-  animation: leafSway2 9s ease-in-out infinite alternate;
 }
 
 /* Leaf Sway Animations */
@@ -124,15 +97,6 @@
   }
   100% {
     transform: translateY(12px) rotate(-45deg) scale(0.95);
-  }
-}
-
-@keyframes leafSway3 {
-  0% {
-    transform: translateY(0) rotate(45deg) scale(1);
-  }
-  100% {
-    transform: translateY(-8px) rotate(35deg) scale(1.02);
   }
 }
 
@@ -294,6 +258,10 @@
   text-align: center;
   position: relative;
   z-index: 4;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .btn-back-home {
@@ -324,6 +292,19 @@
 .btn-back-home:active {
   transform: translateY(-1px);
   box-shadow: 0 6px 15px rgba(67, 154, 58, 0.2);
+}
+
+.btn-go-back {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  box-shadow: none;
+}
+
+.btn-go-back:hover {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(67, 154, 58, 0.35);
 }
 
 /* Responsive Breakpoints */
