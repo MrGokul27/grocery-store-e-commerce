@@ -97,9 +97,43 @@ class CustomHeader extends HTMLElement {
       });
     });
 
-    // Account dropdown (touch/mobile)
+    // Account dropdown (touch/mobile) and session handling
+    const root = getRootPrefix();
     const accountBtn = this.querySelector("#user-account-btn");
     const accountDropdown = this.querySelector("#account-dropdown");
+    const userLoggedIn = localStorage.getItem("userLoggedIn") === "true";
+
+    if (userLoggedIn && accountBtn && accountDropdown) {
+      // Modify user label
+      const subtext = accountBtn.querySelector(".action-subtext");
+      if (subtext) {
+        subtext.textContent = "Hello, user!";
+      }
+      const maintext = accountBtn.querySelector(".dropdown-trigger");
+      if (maintext) {
+        const userRole = localStorage.getItem("userRole") || "customer";
+        const roleDisplay =
+          userRole.charAt(0).toUpperCase() + userRole.slice(1);
+        maintext.innerHTML = `${roleDisplay} <i class="fa-solid fa-chevron-down chevron-icon icon"></i>`;
+      }
+
+      // Update dropdown items
+      accountDropdown.innerHTML = `
+        <a href="${root}pages/dashboard.html" class="dropdown-item">Dashboard</a>
+        <a href="#" id="header-logout-link" class="dropdown-item text-danger">Logout</a>
+      `;
+
+      // Bind logout action
+      const logoutLink = accountDropdown.querySelector("#header-logout-link");
+      if (logoutLink) {
+        logoutLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          localStorage.clear();
+          window.location.href = root + "pages/login.html";
+        });
+      }
+    }
+
     if (accountBtn && accountDropdown) {
       accountBtn.addEventListener("click", (e) => {
         if (window.innerWidth <= 992) {

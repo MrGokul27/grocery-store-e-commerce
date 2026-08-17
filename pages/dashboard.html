@@ -1,0 +1,1441 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Stackly Grocery</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome Icons CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/webp"
+      href="../assets/images/stackly-logo.webp"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+    <!-- Dashboard Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/dashboard.css" />
+    <!-- Web Components Script -->
+    <script src="../assets/js/script.js" defer></script>
+  </head>
+  <body class="dashboard-body">
+    <!-- Main Dashboard Container -->
+    <div class="dashboard-wrapper">
+      <!-- Sidebar Panel (Dynamically Populated) -->
+      <aside class="dashboard-sidebar" id="dashboard-sidebar">
+        <!-- Sidebar Content will be loaded dynamically via Javascript -->
+      </aside>
+
+      <!-- Main Dashboard Content Area -->
+      <main class="dashboard-main">
+        <!-- Mobile Sidebar Toggle -->
+        <button class="mobile-sidebar-toggle" id="mobile-sidebar-toggle-btn">
+          <i class="fa-solid fa-bars"></i>
+          <span>Dashboard Menu</span>
+        </button>
+
+        <!-- Dynamic Header -->
+        <div class="dashboard-header">
+          <h2 class="dashboard-title" id="dashboard-title-text">
+            Welcome Back!
+          </h2>
+          <p class="dashboard-subtitle" id="dashboard-subtitle-text">
+            Here's what's happening today in your Stackly account.
+          </p>
+        </div>
+
+        <!-- Dynamic Content Panels Container -->
+        <div id="dashboard-content-panels">
+          <!-- Dynamic panels loaded by script -->
+        </div>
+      </main>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Dashboard Core Integration Logic -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Load data from LocalStorage
+        let userRole = localStorage.getItem("userRole");
+        let userEmail = localStorage.getItem("userEmail");
+        let userPassword = localStorage.getItem("userPassword");
+        let rememberMe = localStorage.getItem("rememberMe") === "true";
+        let userLoggedIn = localStorage.getItem("userLoggedIn") === "true";
+
+        // Prepopulate mock data if not logged in directly for previewing purposes
+        if (!userLoggedIn) {
+          userRole = "customer"; // Default fallback
+          userEmail = "guest.shopper@stacklygrocery.com";
+          userPassword = "MockUser1234!";
+          rememberMe = true;
+          userLoggedIn = true;
+          // Store so they persist during interaction
+          localStorage.setItem("userRole", userRole);
+          localStorage.setItem("userEmail", userEmail);
+          localStorage.setItem("userPassword", userPassword);
+          localStorage.setItem("rememberMe", rememberMe);
+          localStorage.setItem("userLoggedIn", "true");
+        }
+
+        // DOM elements
+        const sidebar = document.getElementById("dashboard-sidebar");
+        const panelsContainer = document.getElementById(
+          "dashboard-content-panels",
+        );
+        const dashboardTitle = document.getElementById("dashboard-title-text");
+        const dashboardSubtitle = document.getElementById(
+          "dashboard-subtitle-text",
+        );
+
+        // Format role text
+        const getRoleDisplayName = (role) => {
+          if (role === "customer") return "Customer";
+          if (role === "manager") return "Store Manager";
+          if (role === "delivery") return "Delivery Partner";
+          return "Guest User";
+        };
+
+        // Render dynamic Sidebar based on Role
+        const renderSidebar = () => {
+          let roleBadgeClass = "";
+          if (userRole === "customer") roleBadgeClass = "role-customer-badge";
+          else if (userRole === "manager")
+            roleBadgeClass = "role-manager-badge";
+          else if (userRole === "delivery")
+            roleBadgeClass = "role-delivery-badge";
+
+          let menuHTML = "";
+          if (userRole === "customer") {
+            menuHTML = `
+              <li class="sidebar-menu-item active" data-tab="overview">
+                <span class="sidebar-menu-link"><i class="fa-solid fa-gauge"></i>Overview</span>
+              </li>
+              <li class="sidebar-menu-item" data-tab="orders">
+                <span class="sidebar-menu-link"><i class="fa-solid fa-bag-shopping"></i>My Orders</span>
+              </li>
+              <li class="sidebar-menu-item" data-tab="tracking">
+                <span class="sidebar-menu-link"><i class="fa-solid fa-truck-ramp-box"></i>Track Shipment</span>
+              </li>
+              <li class="sidebar-menu-item" data-tab="addresses">
+                <span class="sidebar-menu-link"><i class="fa-solid fa-location-dot"></i>Saved Addresses</span>
+              </li>
+              <li class="sidebar-menu-item" data-tab="profile">
+                <span class="sidebar-menu-link"><i class="fa-solid fa-user-gear"></i>My Profile Info</span>
+              </li>
+            `;
+          } else if (userRole === "manager") {
+            menuHTML = `
+              <li class="sidebar-menu-item active" data-tab="overview">
+                <span class="sidebar-menu-link"><i class="fa-solid fa-chart-line"></i>Overview</span>
+              </li>
+              <li class="sidebar-menu-item" data-tab="inventory">
+                <span class="sidebar-menu-link"><i class="fa-solid fa-boxes-stacked"></i>Inventory Manager</span>
+              </li>
+              <li class="sidebar-menu-item" data-tab="orders">
+                <span class="sidebar-menu-link"><i class="fa-solid fa-clipboard-list"></i>Incoming Orders</span>
+              </li>
+              <li class="sidebar-menu-item" data-tab="analytics">
+                <span class="sidebar-menu-link"><i class="fa-solid fa-chart-pie"></i>Reports & Analytics</span>
+              </li>
+              <li class="sidebar-menu-item" data-tab="profile">
+                <span class="sidebar-menu-link"><i class="fa-solid fa-user-tie"></i>Manager Profile Info</span>
+              </li>
+            `;
+          } else if (userRole === "delivery") {
+            menuHTML = `
+              <li class="sidebar-menu-item active" data-tab="overview">
+                <span class="sidebar-menu-link"><i class="fa-solid fa-motorcycle"></i>Overview</span>
+              </li>
+              <li class="sidebar-menu-item" data-tab="jobs">
+                <span class="sidebar-menu-link"><i class="fa-solid fa-map-location-dot"></i>Assigned Jobs</span>
+              </li>
+              <li class="sidebar-menu-item" data-tab="earnings">
+                <span class="sidebar-menu-link"><i class="fa-solid fa-wallet"></i>Earnings Log</span>
+              </li>
+              <li class="sidebar-menu-item" data-tab="profile">
+                <span class="sidebar-menu-link"><i class="fa-solid fa-id-card"></i>Courier Profile Info</span>
+              </li>
+            `;
+          }
+
+          sidebar.innerHTML = `
+            <div class="sidebar-header">
+              <div>
+                <h5 class="m-0 fw-bold" style="color: var(--primary-color)">Stackly Dash</h5>
+                <span class="sidebar-role-badge ${roleBadgeClass} mt-2">
+                  <i class="fa-solid fa-shield-halved"></i> ${getRoleDisplayName(userRole)}
+                </span>
+              </div>
+            </div>
+            <ul class="sidebar-menu">
+              ${menuHTML}
+            </ul>
+            <div class="sidebar-footer">
+              <div class="sidebar-user-info">
+                <div class="sidebar-user-avatar">
+                  ${userEmail.charAt(0).toUpperCase()}
+                </div>
+                <div class="sidebar-user-details">
+                  <p class="sidebar-user-name">${getRoleDisplayName(userRole)}</p>
+                  <p class="sidebar-user-email">${userEmail}</p>
+                </div>
+              </div>
+              <button class="logout-btn" id="dashboard-logout-btn">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out
+              </button>
+            </div>
+          `;
+
+          // Bind Logout Button
+          document
+            .getElementById("dashboard-logout-btn")
+            .addEventListener("click", () => {
+              localStorage.clear();
+              window.location.href = "login.html";
+            });
+        };
+
+        // Render Dashboard Content Panels
+        const renderPanels = () => {
+          let panelsHTML = "";
+
+          // Profile View Common Sub-Template
+          const getProfilePanelHTML = () => `
+            <div class="tab-panel" id="panel-profile">
+              <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                  <h5 class="dashboard-card-title"><i class="fa-solid fa-user-shield text-success"></i> Form Login Credentials</h5>
+                  <span class="badge bg-secondary">Real-Time Data Captured</span>
+                </div>
+                <div class="dashboard-card-body">
+                  <div class="alert alert-success d-flex align-items-center" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i>
+                    <div>
+                      This section displays the exact credentials entered into the authentication portal fields.
+                    </div>
+                  </div>
+                  
+                  <div class="profile-info-grid">
+                    <div class="profile-info-card">
+                      <div class="profile-info-label">Email Address</div>
+                      <div class="profile-info-value" id="profile-email-val">${userEmail}</div>
+                    </div>
+                    
+                    <div class="profile-info-card">
+                      <div class="profile-info-label">Selected Role</div>
+                      <div class="profile-info-value text-capitalize" id="profile-role-val">${userRole}</div>
+                    </div>
+
+                    <div class="profile-info-card">
+                      <div class="profile-info-label">Remember Me Setting</div>
+                      <div class="profile-info-value" id="profile-remember-val">
+                        <i class="${rememberMe ? "fa-solid fa-check-circle text-success" : "fa-solid fa-times-circle text-danger"}"></i> 
+                        ${rememberMe ? "Enabled" : "Disabled"}
+                      </div>
+                    </div>
+
+                    <div class="profile-info-card">
+                      <div class="profile-info-label">Session Status</div>
+                      <div class="profile-info-value text-success"><i class="fa-solid fa-circle-dot spin"></i> Active Secure Session</div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label fw-bold">Captured Password (Encrypted locally)</label>
+                      <div class="input-group">
+                        <input type="password" class="form-control" id="profile-pass-input" value="${userPassword}" readonly style="background-color:#f8fafc">
+                        <button class="btn btn-outline-secondary" type="button" id="profile-pass-toggle">
+                          <i class="fa-solid fa-eye" id="profile-pass-icon"></i>
+                        </button>
+                      </div>
+                      <span class="form-text text-muted">Passwords are obfuscated by default for client confidentiality.</span>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label fw-bold">Theme Style Match</label>
+                      <input type="text" class="form-control" value="Stackly Grocery Brand Theme - HSL Tailored Green" disabled>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 border-top pt-3 text-end">
+                    <button class="btn btn-success" id="btn-save-cosmetic">Save Dashboard Custom Settings</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+
+          if (userRole === "customer") {
+            panelsHTML = `
+              <!-- OVERVIEW -->
+              <div class="tab-panel active" id="panel-overview">
+                <div class="row g-4 mb-4">
+                  <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                      <div class="stat-info">
+                        <span class="stat-label">Orders Placed</span>
+                        <h3 class="stat-value">14</h3>
+                        <span class="stat-change positive"><i class="fa-solid fa-arrow-up"></i> 2 active</span>
+                      </div>
+                      <div class="stat-icon-wrapper stat-icon-customer">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                      <div class="stat-info">
+                        <span class="stat-label">Total Savings</span>
+                        <h3 class="stat-value">₹1,240</h3>
+                        <span class="stat-change positive"><i class="fa-solid fa-arrow-up"></i> 8% avg</span>
+                      </div>
+                      <div class="stat-icon-wrapper stat-icon-customer">
+                        <i class="fa-solid fa-tags"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                      <div class="stat-info">
+                        <span class="stat-label">Loyalty Points</span>
+                        <h3 class="stat-value">420</h3>
+                        <span class="stat-change positive"><i class="fa-solid fa-circle-check"></i> ₹42 value</span>
+                      </div>
+                      <div class="stat-icon-wrapper stat-icon-customer">
+                        <i class="fa-solid fa-award"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                      <div class="stat-info">
+                        <span class="stat-label">Active Cart</span>
+                        <h3 class="stat-value">₹645</h3>
+                        <span class="stat-change text-muted">4 grocery items</span>
+                      </div>
+                      <div class="stat-icon-wrapper stat-icon-customer">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row g-4">
+                  <div class="col-lg-8">
+                    <div class="dashboard-card h-100">
+                      <div class="dashboard-card-header">
+                        <h5 class="dashboard-card-title"><i class="fa-solid fa-clock-rotate-left text-success"></i> Recent E-Commerce Orders</h5>
+                        <a href="#" class="btn btn-sm btn-outline-success">View All</a>
+                      </div>
+                      <div class="dashboard-card-body p-0">
+                        <div class="table-responsive">
+                          <table class="table table-grocery align-middle">
+                            <thead>
+                              <tr>
+                                <th>Order ID</th>
+                                <th>Delivery Address</th>
+                                <th>Value</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td class="fw-bold">#STK-98312</td>
+                                <td>Home (Chennai)</td>
+                                <td>₹645.00</td>
+                                <td><span class="status-badge badge-transit"><i class="fa-solid fa-truck"></i> Shipped</span></td>
+                                <td><a href="#" class="btn btn-action-sm btn-outline-success">Track</a></td>
+                              </tr>
+                              <tr>
+                                <td class="fw-bold">#STK-97108</td>
+                                <td>Home (Chennai)</td>
+                                <td>₹420.00</td>
+                                <td><span class="status-badge badge-delivered"><i class="fa-solid fa-circle-check"></i> Delivered</span></td>
+                                <td><a href="#" class="btn btn-action-sm btn-outline-success">Reorder</a></td>
+                              </tr>
+                              <tr>
+                                <td class="fw-bold">#STK-96420</td>
+                                <td>Office (Chennai)</td>
+                                <td>₹1,150.00</td>
+                                <td><span class="status-badge badge-delivered"><i class="fa-solid fa-circle-check"></i> Delivered</span></td>
+                                <td><a href="#" class="btn btn-action-sm btn-outline-success">Reorder</a></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="dashboard-card h-100">
+                      <div class="dashboard-card-header">
+                        <h5 class="dashboard-card-title"><i class="fa-solid fa-basket-shopping text-success"></i> Weekly Grocery Cart</h5>
+                      </div>
+                      <div class="dashboard-card-body">
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <div>
+                              <h6 class="m-0 fw-semibold">Organic Red Apples</h6>
+                              <small class="text-muted">1 kg pack</small>
+                            </div>
+                            <span class="badge bg-success rounded-pill">₹180</span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <div>
+                              <h6 class="m-0 fw-semibold">Farm Fresh Whole Milk</h6>
+                              <small class="text-muted">2 x 500ml</small>
+                            </div>
+                            <span class="badge bg-success rounded-pill">₹60</span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <div>
+                              <h6 class="m-0 fw-semibold">Whole Wheat Sourdough</h6>
+                              <small class="text-muted">400g loaf</small>
+                            </div>
+                            <span class="badge bg-success rounded-pill">₹85</span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <div>
+                              <h6 class="m-0 fw-semibold">Premium Hass Avocados</h6>
+                              <small class="text-muted">2 units bundle</small>
+                            </div>
+                            <span class="badge bg-success rounded-pill">₹320</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- MY ORDERS -->
+              <div class="tab-panel" id="panel-orders">
+                <div class="dashboard-card">
+                  <div class="dashboard-card-header">
+                    <h5 class="dashboard-card-title"><i class="fa-solid fa-list-check text-success"></i> All Orders History</h5>
+                  </div>
+                  <div class="dashboard-card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table table-grocery align-middle">
+                        <thead>
+                          <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Items Summary</th>
+                            <th>Delivery Address</th>
+                            <th>Total Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="fw-bold">#STK-98312</td>
+                            <td>Aug 15, 2026</td>
+                            <td>Organic Apples, Avocados, Whole Milk</td>
+                            <td>Home (Chennai)</td>
+                            <td>₹645.00</td>
+                            <td><span class="status-badge badge-transit"><i class="fa-solid fa-truck"></i> Shipped</span></td>
+                            <td>
+                              <a href="#" class="btn btn-action-sm btn-outline-success tracking-tab-trigger">Track Item</a>
+                              <a href="#" class="btn btn-action-sm btn-light">Invoice</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="fw-bold">#STK-97108</td>
+                            <td>Aug 10, 2026</td>
+                            <td>Greek Yogurt, Sourdough Bread, Eggs</td>
+                            <td>Home (Chennai)</td>
+                            <td>₹420.00</td>
+                            <td><span class="status-badge badge-delivered"><i class="fa-solid fa-circle-check"></i> Delivered</span></td>
+                            <td>
+                              <a href="#" class="btn btn-action-sm btn-outline-success">Reorder</a>
+                              <a href="#" class="btn btn-action-sm btn-light">Invoice</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="fw-bold">#STK-96420</td>
+                            <td>Aug 01, 2026</td>
+                            <td>Tomato Ketchup, Pasta, Olive Oil</td>
+                            <td>Office (Chennai)</td>
+                            <td>₹1,150.00</td>
+                            <td><span class="status-badge badge-delivered"><i class="fa-solid fa-circle-check"></i> Delivered</span></td>
+                            <td>
+                              <a href="#" class="btn btn-action-sm btn-outline-success">Reorder</a>
+                              <a href="#" class="btn btn-action-sm btn-light">Invoice</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="fw-bold">#STK-95112</td>
+                            <td>Jul 24, 2026</td>
+                            <td>Unsalted Butter, Cheddar Cheese</td>
+                            <td>Home (Chennai)</td>
+                            <td>₹280.00</td>
+                            <td><span class="status-badge badge-delivered"><i class="fa-solid fa-circle-check"></i> Delivered</span></td>
+                            <td>
+                              <a href="#" class="btn btn-action-sm btn-outline-success">Reorder</a>
+                              <a href="#" class="btn btn-action-sm btn-light">Invoice</a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TRACKING -->
+              <div class="tab-panel" id="panel-tracking">
+                <div class="row g-4">
+                  <div class="col-lg-6">
+                    <div class="dashboard-card h-100">
+                      <div class="dashboard-card-header">
+                        <h5 class="dashboard-card-title"><i class="fa-solid fa-map-location-dot text-success"></i> Delivery Tracking: #STK-98312</h5>
+                      </div>
+                      <div class="dashboard-card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                          <div>
+                            <span class="text-muted d-block small">ESTIMATED DELIVERY</span>
+                            <h4 class="fw-bold text-success m-0">Today, 06:30 PM</h4>
+                          </div>
+                          <div>
+                            <span class="text-muted d-block small">COURIER SERVICE</span>
+                            <span class="fw-bold text-dark"><i class="fa-solid fa-motorcycle"></i> Stackly Express Partner</span>
+                          </div>
+                        </div>
+
+                        <ul class="timeline-track">
+                          <li class="timeline-step completed">
+                            <div class="timeline-icon-box"><i class="fa-solid fa-clipboard-check"></i></div>
+                            <div class="timeline-content">
+                              <h6 class="timeline-title">Order Confirmed & Payment Received</h6>
+                              <span class="timeline-time">Aug 15, 2026 - 10:15 AM</span>
+                              <p class="timeline-desc">Fulfillment centre accepted order for packing.</p>
+                            </div>
+                          </li>
+                          <li class="timeline-step completed">
+                            <div class="timeline-icon-box"><i class="fa-solid fa-box-open"></i></div>
+                            <div class="timeline-content">
+                              <h6 class="timeline-title">Packed at fulfillment centre</h6>
+                              <span class="timeline-time">Aug 15, 2026 - 02:30 PM</span>
+                              <p class="timeline-desc">Items checked and packaged in cold-storage grocery bag.</p>
+                            </div>
+                          </li>
+                          <li class="timeline-step active">
+                            <div class="timeline-icon-box"><i class="fa-solid fa-truck-moving"></i></div>
+                            <div class="timeline-content">
+                              <h6 class="timeline-title">Out for dispatch & in transit</h6>
+                              <span class="timeline-time">Aug 17, 2026 - 03:00 PM</span>
+                              <p class="timeline-desc">Handed over to delivery driver. Tracking route live updates.</p>
+                            </div>
+                          </li>
+                          <li class="timeline-step">
+                            <div class="timeline-icon-box"><i class="fa-solid fa-house-chimney"></i></div>
+                            <div class="timeline-content">
+                              <h6 class="timeline-title">Delivered to doorstep</h6>
+                              <span class="timeline-time">Expected - 06:30 PM</span>
+                              <p class="timeline-desc">Pending driver delivery verification code.</p>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-lg-6">
+                    <div class="dashboard-card h-100">
+                      <div class="dashboard-card-header">
+                        <h5 class="dashboard-card-title"><i class="fa-solid fa-receipt text-success"></i> Order Item Checklist</h5>
+                      </div>
+                      <div class="dashboard-card-body">
+                        <div class="alert alert-light border d-flex align-items-center mb-3">
+                          <i class="fa-solid fa-snowflake text-primary me-2 fs-5"></i>
+                          <div>Cold storage items packaging applied.</div>
+                        </div>
+                        <ul class="list-group list-group-flush mb-4">
+                          <li class="list-group-item d-flex justify-content-between px-0">
+                            <span>1. Organic Red Apples (1kg)</span>
+                            <span class="fw-bold">₹180.00</span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between px-0">
+                            <span>2. Premium Hass Avocados (2 units)</span>
+                            <span class="fw-bold">₹320.00</span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between px-0">
+                            <span>3. Farm Fresh Whole Milk (1L)</span>
+                            <span class="fw-bold">₹60.00</span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between px-0">
+                            <span>4. Organic White Eggs (12 pack)</span>
+                            <span class="fw-bold">₹85.00</span>
+                          </li>
+                        </ul>
+                        <div class="border-top pt-3 d-flex justify-content-between align-items-center">
+                          <h6 class="m-0 text-muted">Subtotal</h6>
+                          <h5 class="fw-bold m-0">₹645.00</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ADDRESSES -->
+              <div class="tab-panel" id="panel-addresses">
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <div class="card border h-100 shadow-sm">
+                      <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                          <span class="badge bg-success rounded-pill">Home Address (Default)</span>
+                          <i class="fa-solid fa-house text-success fs-5"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">Home (Primary)</h5>
+                        <p class="text-muted m-0 small mb-4">
+                          Door 12, Park Street, Gandhi Nagar, Chennai, Tamil Nadu - 600001
+                        </p>
+                        <div class="d-flex gap-2">
+                          <button class="btn btn-sm btn-outline-success flex-grow-1"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+                          <button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="card border h-100 shadow-sm">
+                      <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                          <span class="badge bg-secondary rounded-pill">Work Address</span>
+                          <i class="fa-solid fa-briefcase text-muted fs-5"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">Office Block</h5>
+                        <p class="text-muted m-0 small mb-4">
+                          Block B, 4th Floor, IT Tech Park, OMR Road, Chennai, Tamil Nadu - 600096
+                        </p>
+                        <div class="d-flex gap-2">
+                          <button class="btn btn-sm btn-outline-success flex-grow-1"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+                          <button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="card border border-dashed h-100 shadow-sm d-flex align-items-center justify-content-center py-5" style="border-style: dashed !important; border-width: 2px !important;">
+                      <button class="btn btn-outline-success btn-lg rounded-circle mb-3"><i class="fa-solid fa-plus"></i></button>
+                      <h6 class="fw-bold m-0 text-success">Add New Delivery Location</h6>
+                      <small class="text-muted">Register a new drop point</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              ${getProfilePanelHTML()}
+            `;
+          } else if (userRole === "manager") {
+            panelsHTML = `
+              <!-- OVERVIEW -->
+              <div class="tab-panel active" id="panel-overview">
+                <div class="row g-4 mb-4">
+                  <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                      <div class="stat-info">
+                        <span class="stat-label">Gross Sales Today</span>
+                        <h3 class="stat-value">₹45,820</h3>
+                        <span class="stat-change positive"><i class="fa-solid fa-arrow-trend-up"></i> +12% week</span>
+                      </div>
+                      <div class="stat-icon-wrapper stat-icon-manager">
+                        <i class="fa-solid fa-chart-line"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                      <div class="stat-info">
+                        <span class="stat-label">Active Stocks</span>
+                        <h3 class="stat-value">1,420</h3>
+                        <span class="stat-change text-muted">48 category SKU</span>
+                      </div>
+                      <div class="stat-icon-wrapper stat-icon-manager">
+                        <i class="fa-solid fa-cubes"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                      <div class="stat-info">
+                        <span class="stat-label">Low Stock Alerts</span>
+                        <h3 class="stat-value text-danger">8</h3>
+                        <span class="stat-change negative"><i class="fa-solid fa-triangle-exclamation"></i> Action required</span>
+                      </div>
+                      <div class="stat-icon-wrapper stat-icon-manager" style="background-color:rgba(220,53,69,0.1); color:#dc3545">
+                        <i class="fa-solid fa-box-open"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                      <div class="stat-info">
+                        <span class="stat-label">Pending Fulfillments</span>
+                        <h3 class="stat-value">5</h3>
+                        <span class="stat-change positive"><i class="fa-solid fa-circle-check"></i> Ready to pack</span>
+                      </div>
+                      <div class="stat-icon-wrapper stat-icon-manager">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row g-4">
+                  <div class="col-lg-6">
+                    <div class="dashboard-card h-100">
+                      <div class="dashboard-card-header">
+                        <h5 class="dashboard-card-title"><i class="fa-solid fa-triangle-exclamation text-danger"></i> Low Stocks Stockpile</h5>
+                      </div>
+                      <div class="dashboard-card-body p-0">
+                        <div class="table-responsive">
+                          <table class="table table-grocery align-middle">
+                            <thead>
+                              <tr>
+                                <th>Item</th>
+                                <th>Category</th>
+                                <th>Stock Left</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td class="fw-semibold">Fresh Spinach Bunch</td>
+                                <td>Produce</td>
+                                <td><span class="badge bg-warning text-dark">4 units</span></td>
+                                <td><button class="btn btn-action-sm btn-outline-success">Restock</button></td>
+                              </tr>
+                              <tr>
+                                <td class="fw-semibold">Farm Butter 200g</td>
+                                <td>Dairy & Eggs</td>
+                                <td><span class="badge bg-warning text-dark">3 units</span></td>
+                                <td><button class="btn btn-action-sm btn-outline-success">Restock</button></td>
+                              </tr>
+                              <tr>
+                                <td class="fw-semibold">Organic Almond Milk 1L</td>
+                                <td>Beverages</td>
+                                <td><span class="badge bg-danger">0 units</span></td>
+                                <td><button class="btn btn-action-sm btn-outline-success">Restock</button></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-lg-6">
+                    <div class="dashboard-card h-100">
+                      <div class="dashboard-card-header">
+                        <h5 class="dashboard-card-title"><i class="fa-solid fa-truck text-success"></i> Pending Courier Dispatch</h5>
+                      </div>
+                      <div class="dashboard-card-body p-0">
+                        <div class="table-responsive">
+                          <table class="table table-grocery align-middle">
+                            <thead>
+                              <tr>
+                                <th>Order</th>
+                                <th>Customer</th>
+                                <th>Total</th>
+                                <th>Stage</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td class="fw-bold">#STK-98315</td>
+                                <td>Arjun Kumar</td>
+                                <td>₹480.00</td>
+                                <td><span class="status-badge badge-pending">Awaiting Acceptance</span></td>
+                              </tr>
+                              <tr>
+                                <td class="fw-bold">#STK-98314</td>
+                                <td>Preeti Sen</td>
+                                <td>₹380.00</td>
+                                <td><span class="status-badge badge-preparing">Packing Items</span></td>
+                              </tr>
+                              <tr>
+                                <td class="fw-bold">#STK-98310</td>
+                                <td>Vikram Singh</td>
+                                <td>₹210.00</td>
+                                <td><span class="status-badge badge-transit">Driver Picked Up</span></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- INVENTORY -->
+              <div class="tab-panel" id="panel-inventory">
+                <div class="dashboard-card">
+                  <div class="dashboard-card-header">
+                    <h5 class="dashboard-card-title"><i class="fa-solid fa-warehouse text-success"></i> Stock Control List</h5>
+                    <button class="btn btn-success btn-sm"><i class="fa-solid fa-plus"></i> Add New Product</button>
+                  </div>
+                  <div class="dashboard-card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table table-grocery align-middle">
+                        <thead>
+                          <tr>
+                            <th>SKU ID</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Pricing</th>
+                            <th>Stock Count</th>
+                            <th>Stock Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="fw-semibold">#PRD-401</td>
+                            <td class="fw-semibold">Organic Cavendish Bananas</td>
+                            <td>Fruits & Vegetables</td>
+                            <td>₹60.00 / dozen</td>
+                            <td>140 units</td>
+                            <td><span class="status-badge badge-instock">In Stock</span></td>
+                            <td>
+                              <button class="btn btn-action-sm btn-outline-success"><i class="fa-solid fa-pen-to-square"></i></button>
+                              <button class="btn btn-action-sm btn-outline-danger"><i class="fa-solid fa-trash-can"></i></button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="fw-semibold">#PRD-322</td>
+                            <td class="fw-semibold">Fresh Spinach (Lettuce alternative)</td>
+                            <td>Fruits & Vegetables</td>
+                            <td>₹25.00 / bunch</td>
+                            <td>4 units</td>
+                            <td><span class="status-badge badge-lowstock">Low Stock</span></td>
+                            <td>
+                              <button class="btn btn-action-sm btn-outline-success"><i class="fa-solid fa-pen-to-square"></i></button>
+                              <button class="btn btn-action-sm btn-outline-danger"><i class="fa-solid fa-trash-can"></i></button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="fw-semibold">#PRD-109</td>
+                            <td class="fw-semibold">Farm Butter 200g</td>
+                            <td>Dairy & Eggs</td>
+                            <td>₹110.00</td>
+                            <td>3 units</td>
+                            <td><span class="status-badge badge-lowstock">Low Stock</span></td>
+                            <td>
+                              <button class="btn btn-action-sm btn-outline-success"><i class="fa-solid fa-pen-to-square"></i></button>
+                              <button class="btn btn-action-sm btn-outline-danger"><i class="fa-solid fa-trash-can"></i></button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="fw-semibold">#PRD-882</td>
+                            <td class="fw-semibold">Organic Almond Milk 1L</td>
+                            <td>Beverages</td>
+                            <td>₹220.00</td>
+                            <td>0 units</td>
+                            <td><span class="status-badge badge-outstock">Out of Stock</span></td>
+                            <td>
+                              <button class="btn btn-action-sm btn-outline-success"><i class="fa-solid fa-pen-to-square"></i></button>
+                              <button class="btn btn-action-sm btn-outline-danger"><i class="fa-solid fa-trash-can"></i></button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="fw-semibold">#PRD-541</td>
+                            <td class="fw-semibold">Whole Wheat Bread (Multigrain)</td>
+                            <td>Bakery</td>
+                            <td>₹45.00</td>
+                            <td>60 units</td>
+                            <td><span class="status-badge badge-instock">In Stock</span></td>
+                            <td>
+                              <button class="btn btn-action-sm btn-outline-success"><i class="fa-solid fa-pen-to-square"></i></button>
+                              <button class="btn btn-action-sm btn-outline-danger"><i class="fa-solid fa-trash-can"></i></button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- INCOMING ORDERS -->
+              <div class="tab-panel" id="panel-orders">
+                <div class="dashboard-card">
+                  <div class="dashboard-card-header">
+                    <h5 class="dashboard-card-title"><i class="fa-solid fa-bell text-success"></i> Customer Purchase Orders</h5>
+                  </div>
+                  <div class="dashboard-card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table table-grocery align-middle">
+                        <thead>
+                          <tr>
+                            <th>Order ID</th>
+                            <th>Customer Name</th>
+                            <th>Purchased Goods</th>
+                            <th>Billing Value</th>
+                            <th>State</th>
+                            <th>Action Controls</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="fw-bold">#STK-98315</td>
+                            <td>Arjun Kumar</td>
+                            <td>Fresh Broccoli, Milk, Oats</td>
+                            <td>₹480.00</td>
+                            <td><span class="status-badge badge-pending">Pending</span></td>
+                            <td>
+                              <button class="btn btn-action-sm btn-success">Accept Order</button>
+                              <button class="btn btn-action-sm btn-outline-danger">Cancel</button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="fw-bold">#STK-98314</td>
+                            <td>Preeti Sen</td>
+                            <td>Sourdough Bread, Butter, Cheese</td>
+                            <td>₹380.00</td>
+                            <td><span class="status-badge badge-preparing">Preparing</span></td>
+                            <td>
+                              <button class="btn btn-action-sm btn-success">Mark Ready for Dispatch</button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="fw-bold">#STK-98310</td>
+                            <td>Vikram Singh</td>
+                            <td>Organic Bananas (x2), Apple Juice</td>
+                            <td>₹210.00</td>
+                            <td><span class="status-badge badge-delivered">Ready for Courier</span></td>
+                            <td>
+                              <button class="btn btn-action-sm btn-outline-success">Assign Courier</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ANALYTICS -->
+              <div class="tab-panel" id="panel-analytics">
+                <div class="row g-4">
+                  <div class="col-lg-6">
+                    <div class="dashboard-card h-100">
+                      <div class="dashboard-card-header">
+                        <h5 class="dashboard-card-title"><i class="fa-solid fa-chart-pie text-success"></i> Sales By Grocery Category</h5>
+                      </div>
+                      <div class="dashboard-card-body">
+                        <p class="text-muted small">Distribution based on last 30 days purchase data volume.</p>
+                        
+                        <div class="d-flex flex-column gap-3 mt-4">
+                          <div>
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                              <span class="fw-semibold small">Fruits & Fresh Produce</span>
+                              <span class="fw-bold text-success small">42%</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                              <div class="progress-bar bg-success" role="progressbar" style="width: 42%" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+                          
+                          <div>
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                              <span class="fw-semibold small">Dairy Products & Farm Eggs</span>
+                              <span class="fw-bold text-success small">28%</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                              <div class="progress-bar bg-success" role="progressbar" style="width: 28%" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+
+                          <div>
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                              <span class="fw-semibold small">Bakery, Bread & Grains</span>
+                              <span class="fw-bold text-success small">18%</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                              <div class="progress-bar bg-success" role="progressbar" style="width: 18%" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+
+                          <div>
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                              <span class="fw-semibold small">Beverages & Organic Juices</span>
+                              <span class="fw-bold text-success small">12%</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                              <div class="progress-bar bg-success" role="progressbar" style="width: 12%" aria-valuenow="12" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-lg-6">
+                    <div class="dashboard-card h-100">
+                      <div class="dashboard-card-header">
+                        <h5 class="dashboard-card-title"><i class="fa-solid fa-clock text-success"></i> Sales Volume Performance</h5>
+                      </div>
+                      <div class="dashboard-card-body">
+                        <div class="alert alert-success d-flex align-items-center" role="alert">
+                          <i class="fa-solid fa-award me-2 fs-5"></i>
+                          <div>Weekly target status achieved: <strong>102%</strong></div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span>Monday Sales</span>
+                            <span class="fw-bold text-success">₹18,400</span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span>Tuesday Sales</span>
+                            <span class="fw-bold text-success">₹22,100</span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span>Wednesday Sales</span>
+                            <span class="fw-bold text-success">₹19,800</span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span>Thursday Sales</span>
+                            <span class="fw-bold text-success">₹24,500</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              ${getProfilePanelHTML()}
+            `;
+          } else if (userRole === "delivery") {
+            panelsHTML = `
+              <!-- OVERVIEW -->
+              <div class="tab-panel active" id="panel-overview">
+                <div class="row g-4 mb-4">
+                  <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                      <div class="stat-info">
+                        <span class="stat-label">Deliveries Completed</span>
+                        <h3 class="stat-value">126</h3>
+                        <span class="stat-change positive"><i class="fa-solid fa-bicycle"></i> 8 runs today</span>
+                      </div>
+                      <div class="stat-icon-wrapper stat-icon-delivery">
+                        <i class="fa-solid fa-circle-check"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                      <div class="stat-info">
+                        <span class="stat-label">Earnings Today</span>
+                        <h3 class="stat-value">₹950</h3>
+                        <span class="stat-change positive"><i class="fa-solid fa-plus"></i> Includes tips</span>
+                      </div>
+                      <div class="stat-icon-wrapper stat-icon-delivery">
+                        <i class="fa-solid fa-wallet"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                      <div class="stat-info">
+                        <span class="stat-label">Courier Rating</span>
+                        <h3 class="stat-value">4.9 ★</h3>
+                        <span class="stat-change positive"><i class="fa-solid fa-star text-warning"></i> Top tier driver</span>
+                      </div>
+                      <div class="stat-icon-wrapper stat-icon-delivery">
+                        <i class="fa-solid fa-star"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                      <div class="stat-info">
+                        <span class="stat-label">Active Assignee</span>
+                        <h3 class="stat-value">1 job</h3>
+                        <span class="stat-change text-muted">In-transit delivery</span>
+                      </div>
+                      <div class="stat-icon-wrapper stat-icon-delivery">
+                        <i class="fa-solid fa-truck-ramp-box"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row g-4">
+                  <div class="col-lg-7">
+                    <div class="dashboard-card h-100">
+                      <div class="dashboard-card-header">
+                        <h5 class="dashboard-card-title"><i class="fa-solid fa-route text-primary"></i> Current Active Route</h5>
+                      </div>
+                      <div class="dashboard-card-body">
+                        <div class="alert alert-primary d-flex align-items-center" role="alert">
+                          <i class="fa-solid fa-map-pin me-2 fs-5"></i>
+                          <div>Ensure cold-insulated box is securely closed. Dispatch deadline in <strong>24 mins</strong>.</div>
+                        </div>
+                        <div class="border rounded p-3 mb-4">
+                          <h6 class="fw-bold mb-3"><i class="fa-solid fa-store text-success me-2"></i> Pickup Origin Hub</h6>
+                          <p class="m-0 small text-muted">Stackly Store Hub, Sector 3, Anna Nagar, Chennai</p>
+                          <hr class="my-3">
+                          <h6 class="fw-bold mb-3"><i class="fa-solid fa-location-dot text-primary me-2"></i> Dropoff Destination</h6>
+                          <p class="fw-semibold m-0 small">Ramesh Dev</p>
+                          <p class="m-0 small text-muted">Block 4C, Royal Apartments, Anna Nagar East, Chennai</p>
+                        </div>
+                        <button class="btn btn-primary w-100"><i class="fa-solid fa-map-location-dot"></i> View Navigation Route</button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-lg-5">
+                    <div class="dashboard-card h-100">
+                      <div class="dashboard-card-header">
+                        <h5 class="dashboard-card-title"><i class="fa-solid fa-shield text-success"></i> Delivery partner safety tips</h5>
+                      </div>
+                      <div class="dashboard-card-body">
+                        <ul class="list-unstyled d-flex flex-column gap-3">
+                          <li class="d-flex gap-3 align-items-start">
+                            <i class="fa-solid fa-helmet-safety text-warning fs-4 mt-1"></i>
+                            <div>
+                              <h6 class="fw-bold m-0 small">Wear Helmets At All Times</h6>
+                              <p class="text-muted m-0 small">Safety first. Ensure chin strap is fastened securely.</p>
+                            </div>
+                          </li>
+                          <li class="d-flex gap-3 align-items-start">
+                            <i class="fa-solid fa-hand-holding-hand text-success fs-4 mt-1"></i>
+                            <div>
+                              <h6 class="fw-bold m-0 small">Contactless Delivery</h6>
+                              <p class="text-muted m-0 small">If requested by user, leave package at door and upload image proof.</p>
+                            </div>
+                          </li>
+                          <li class="d-flex gap-3 align-items-start">
+                            <i class="fa-solid fa-mobile-screen-button text-primary fs-4 mt-1"></i>
+                            <div>
+                              <h6 class="fw-bold m-0 small">Verify delivery OTP</h6>
+                              <p class="text-muted m-0 small">Request customer signature or OTP confirmation upon drop off.</p>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- JOBS -->
+              <div class="tab-panel" id="panel-jobs">
+                <div class="dashboard-card">
+                  <div class="dashboard-card-header">
+                    <h5 class="dashboard-card-title"><i class="fa-solid fa-truck-delivery text-primary"></i> Allocated Delivery Run Sheet</h5>
+                  </div>
+                  <div class="dashboard-card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table table-grocery align-middle">
+                        <thead>
+                          <tr>
+                            <th>Job ID</th>
+                            <th>Pickup Location</th>
+                            <th>Dropoff Address</th>
+                            <th>Collect Amount</th>
+                            <th>Job State</th>
+                            <th>Action Commands</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="fw-bold">#DLV-771</td>
+                            <td>Stackly Store - Anna Nagar</td>
+                            <td>Ramesh Dev, Block 4C, Anna Nagar</td>
+                            <td>₹645.00 (COD)</td>
+                            <td><span class="status-badge badge-transit"><i class="fa-solid fa-motorcycle"></i> In Transit</span></td>
+                            <td>
+                              <button class="btn btn-action-sm btn-success">Mark Completed</button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="fw-bold">#DLV-772</td>
+                            <td>Stackly Store - Anna Nagar</td>
+                            <td>Kriti Jain, Apt 10, Nungambakkam</td>
+                            <td>₹0.00 (Prepaid)</td>
+                            <td><span class="status-badge badge-pending">Assigned</span></td>
+                            <td>
+                              <button class="btn btn-action-sm btn-primary">Start Pickup</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- EARNINGS -->
+              <div class="tab-panel" id="panel-earnings">
+                <div class="dashboard-card">
+                  <div class="dashboard-card-header">
+                    <h5 class="dashboard-card-title"><i class="fa-solid fa-piggy-bank text-primary"></i> Earnings Register</h5>
+                  </div>
+                  <div class="dashboard-card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table table-grocery align-middle">
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Reference Job ID</th>
+                            <th>Base Fare</th>
+                            <th>Tips Added</th>
+                            <th>Total Payout</th>
+                            <th>Payment State</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Aug 17, 2026</td>
+                            <td class="fw-bold">#DLV-765</td>
+                            <td>₹60.00</td>
+                            <td>₹30.00</td>
+                            <td class="fw-bold text-success">₹90.00</td>
+                            <td><span class="badge bg-success">Transferred</span></td>
+                          </tr>
+                          <tr>
+                            <td>Aug 17, 2026</td>
+                            <td class="fw-bold">#DLV-764</td>
+                            <td>₹55.00</td>
+                            <td>₹10.00</td>
+                            <td class="fw-bold text-success">₹65.00</td>
+                            <td><span class="badge bg-success">Transferred</span></td>
+                          </tr>
+                          <tr>
+                            <td>Aug 16, 2026</td>
+                            <td class="fw-bold">#DLV-759</td>
+                            <td>₹70.00</td>
+                            <td>₹40.00</td>
+                            <td class="fw-bold text-success">₹110.00</td>
+                            <td><span class="badge bg-success">Transferred</span></td>
+                          </tr>
+                          <tr>
+                            <td>Aug 16, 2026</td>
+                            <td class="fw-bold">#DLV-758</td>
+                            <td>₹60.00</td>
+                            <td>₹0.00</td>
+                            <td class="fw-bold text-success">₹60.00</td>
+                            <td><span class="badge bg-success">Transferred</span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              ${getProfilePanelHTML()}
+            `;
+          }
+
+          panelsContainer.innerHTML = panelsHTML;
+        };
+
+        // Initialize elements
+        renderSidebar();
+        renderPanels();
+
+        // Mobile Sidebar Toggling functionality
+        const mobileToggleBtn = document.getElementById(
+          "mobile-sidebar-toggle-btn",
+        );
+        const dashboardSidebarEl = document.getElementById("dashboard-sidebar");
+
+        if (mobileToggleBtn && dashboardSidebarEl) {
+          mobileToggleBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            dashboardSidebarEl.classList.toggle("show");
+          });
+
+          // Close sidebar if clicked outside of it on mobile
+          document.addEventListener("click", (e) => {
+            if (window.innerWidth <= 992) {
+              if (
+                !dashboardSidebarEl.contains(e.target) &&
+                e.target !== mobileToggleBtn
+              ) {
+                dashboardSidebarEl.classList.remove("show");
+              }
+            }
+          });
+        }
+
+        // Handle tab switches in Dashboard
+        const setupTabHandlers = () => {
+          const listItems = document.querySelectorAll(".sidebar-menu-item");
+          const panels = document.querySelectorAll(".tab-panel");
+
+          listItems.forEach((item) => {
+            item.addEventListener("click", () => {
+              // Clear active on list items
+              listItems.forEach((li) => li.classList.remove("active"));
+              // Set active class on clicked item
+              item.classList.add("active");
+
+              // Hide all tab panels
+              panels.forEach((p) => p.classList.remove("active"));
+
+              // Retrieve tab target name
+              const targetTab = item.getAttribute("data-tab");
+              const activePanel = document.getElementById(`panel-${targetTab}`);
+              if (activePanel) {
+                activePanel.classList.add("active");
+
+                // Update text header
+                if (targetTab === "overview") {
+                  dashboardTitle.textContent = "Welcome Back!";
+                  dashboardSubtitle.textContent =
+                    "Here's what's happening today in your Stackly account.";
+                } else if (targetTab === "profile") {
+                  dashboardTitle.textContent = "Credential Information Record";
+                  dashboardSubtitle.textContent =
+                    "Direct access to local authentication details.";
+                } else {
+                  dashboardTitle.textContent = item
+                    .querySelector("span")
+                    .textContent.trim();
+                  dashboardSubtitle.textContent = `Managing your ${item.querySelector("span").textContent.toLowerCase()} details.`;
+                }
+              }
+
+              // Close sidebar on mobile after selecting
+              if (window.innerWidth <= 992) {
+                dashboardSidebarEl.classList.remove("show");
+              }
+            });
+          });
+
+          // Track Item button trigger mapping to Tracking Tab
+          const trackingTriggers = document.querySelectorAll(
+            ".tracking-tab-trigger",
+          );
+          trackingTriggers.forEach((trigger) => {
+            trigger.addEventListener("click", (e) => {
+              e.preventDefault();
+              const trackingSidebarTab = document.querySelector(
+                '[data-tab="tracking"]',
+              );
+              if (trackingSidebarTab) trackingSidebarTab.click();
+            });
+          });
+        };
+
+        setupTabHandlers();
+
+        // Password Show/Hide Toggle logic on Profile page
+        const setupPasswordToggler = () => {
+          const passToggle = document.getElementById("profile-pass-toggle");
+          const passInput = document.getElementById("profile-pass-input");
+          const passIcon = document.getElementById("profile-pass-icon");
+
+          if (passToggle && passInput && passIcon) {
+            passToggle.addEventListener("click", () => {
+              if (passInput.type === "password") {
+                passInput.type = "text";
+                passIcon.className = "fa-solid fa-eye-slash";
+              } else {
+                passInput.type = "password";
+                passIcon.className = "fa-solid fa-eye";
+              }
+            });
+          }
+        };
+
+        // Trigger listener initialization
+        setupPasswordToggler();
+
+        // Cosmetic feedback for Settings Button
+        const saveCosmeticBtn = document.getElementById("btn-save-cosmetic");
+        if (saveCosmeticBtn) {
+          saveCosmeticBtn.addEventListener("click", () => {
+            saveCosmeticBtn.disabled = true;
+            saveCosmeticBtn.innerHTML =
+              '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+            setTimeout(() => {
+              saveCosmeticBtn.disabled = false;
+              saveCosmeticBtn.textContent = "Save Dashboard Custom Settings";
+              alert("Settings successfully saved in mockup cache!");
+            }, 1000);
+          });
+        }
+
+        // =========================================================================
+        // REDIRECT TO 404 FOR EMPTY LINKS AND DUMMY BUTTONS
+        // =========================================================================
+        const apply404RedirectionScript = () => {
+          // Select all anchor tags
+          const anchors = document.querySelectorAll("a");
+          anchors.forEach((a) => {
+            const href = a.getAttribute("href");
+
+            // Check if link is dummy, empty, or '#' (excluding toggle classes / components if any)
+            if (
+              !href ||
+              href === "#" ||
+              href.trim() === "" ||
+              href.toLowerCase() === "javascript:void(0)"
+            ) {
+              // Check if it has class indicating javascript action (like trigger tabs)
+              if (
+                a.classList.contains("tracking-tab-trigger") ||
+                a.classList.contains("nav-menu-link")
+              ) {
+                return; // Let javascript handlers work
+              }
+              a.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.location.href = "../404.html";
+              });
+            }
+          });
+
+          // Select all buttons on the dashboard (excluding layout toggle, logout, password show/hide, save settings)
+          const buttons = document.querySelectorAll("button");
+          buttons.forEach((btn) => {
+            // Exclude operational dashboard buttons
+            if (
+              btn.id === "mobile-sidebar-toggle-btn" ||
+              btn.id === "dashboard-logout-btn" ||
+              btn.id === "profile-pass-toggle" ||
+              btn.id === "btn-save-cosmetic"
+            ) {
+              return;
+            }
+            btn.addEventListener("click", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              window.location.href = "../404.html";
+            });
+          });
+        };
+
+        // Run redirection hook
+        apply404RedirectionScript();
+      });
+    </script>
+  </body>
+</html>

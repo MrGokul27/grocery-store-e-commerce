@@ -367,6 +367,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedRoleText =
           roleInput.options[roleInput.selectedIndex].text.split(" (")[0];
 
+        // Save login details to localStorage
+        localStorage.setItem("userRole", roleInput.value);
+        localStorage.setItem("userEmail", emailValue);
+        localStorage.setItem("userPassword", passwordValue);
+        localStorage.setItem(
+          "rememberMe",
+          document.getElementById("remember-me")
+            ? document.getElementById("remember-me").checked
+            : false,
+        );
+        localStorage.setItem("userLoggedIn", "true");
+
         // Create premium login feedback modal or prompt
         const submitBtn = document.getElementById("login-submit-btn");
         submitBtn.disabled = true;
@@ -374,7 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
           '<i class="fa-solid fa-spinner fa-spin"></i> Logging in...';
 
         setTimeout(() => {
-          window.location.href = "../index.html";
+          window.location.href = "dashboard.html";
         }, 1200);
       }
     });
@@ -499,8 +511,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const isSignup = googleBtn.id === "google-signup-btn";
       googleBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Connecting to Google...`;
 
+      if (!isSignup) {
+        localStorage.setItem("userRole", "customer");
+        localStorage.setItem("userEmail", "googleuser@gmail.com");
+        localStorage.setItem("userPassword", "GoogleOAuth2026!");
+        localStorage.setItem("rememberMe", "true");
+        localStorage.setItem("userLoggedIn", "true");
+      }
+
       setTimeout(() => {
-        window.location.href = isSignup ? "login.html" : "../index.html";
+        window.location.href = isSignup ? "login.html" : "dashboard.html";
       }, 1500);
     });
   }
