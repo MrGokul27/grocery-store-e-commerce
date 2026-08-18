@@ -233,7 +233,7 @@
                     <div class="row">
                       <div class="col-md-6 mb-3">
                         <label for="profile-name-input" class="form-label fw-bold">Full Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="profile-name-input" name="profile-name" value="${storedName}" placeholder="Enter your full name" required>
+                        <input type="text" class="form-control" id="profile-name-input" name="profile-name" maxlength="16" value="${storedName}" placeholder="Enter your full name" required>
                         <div class="invalid-feedback">Please enter your full name.</div>
                       </div>
                       <div class="col-md-6 mb-3">
@@ -246,7 +246,7 @@
                     <div class="row">
                       <div class="col-md-6 mb-3">
                         <label for="profile-phone-input" class="form-label fw-bold">Phone Number <span class="text-danger">*</span></label>
-                        <input type="tel" class="form-control" id="profile-phone-input" name="profile-phone" value="${storedPhone}" placeholder="Enter your phone number" required>
+                        <input type="tel" class="form-control" id="profile-phone-input" name="profile-phone" maxlength="10" value="${storedPhone}" placeholder="Enter your phone number" required>
                         <div class="invalid-feedback">Please enter your phone number.</div>
                       </div>
                       <div class="col-md-6 mb-3">
@@ -1368,6 +1368,23 @@
 
         // Trigger listener initialization
         setupPasswordToggler();
+
+        // Input character restriction for profile fields
+        document.addEventListener("keydown", (e) => {
+          const id = e.target.id;
+          if (
+            id === "profile-name-input" &&
+            /[\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(e.key)
+          ) {
+            e.preventDefault();
+          }
+          if (
+            id === "profile-phone-input" &&
+            /[a-zA-Z!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(e.key)
+          ) {
+            e.preventDefault();
+          }
+        });
 
         // Profile Settings Form validation and redirection handler
         const setupProfileFormHandler = () => {
