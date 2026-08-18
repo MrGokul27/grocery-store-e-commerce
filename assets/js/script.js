@@ -983,6 +983,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     const allBestsellers = [];
+    const seenNames = new Set();
+    const seenImages = new Set();
     for (let i = 0; i < 48; i++) {
       const base = baseProducts[i % baseProducts.length];
       let name = base.name;
@@ -1071,21 +1073,27 @@ document.addEventListener("DOMContentLoaded", () => {
         rating = 4.7;
       }
 
-      allBestsellers.push({
-        id: i + 1,
-        name,
-        category,
-        qty,
-        price,
-        originalPrice,
-        rating,
-        reviews,
-        image,
-        tag: "Bestseller",
-        popularScore: 100 - i,
-        sales: 450 - i * 6,
-        dateAdded: new Date(2026, 7, 1 + (i % 28)).toISOString().split("T")[0],
-      });
+      if (!seenNames.has(name) && !seenImages.has(image)) {
+        seenNames.add(name);
+        seenImages.add(image);
+        allBestsellers.push({
+          id: allBestsellers.length + 1,
+          name,
+          category,
+          qty,
+          price,
+          originalPrice,
+          rating,
+          reviews,
+          image,
+          tag: "Bestseller",
+          popularScore: 100 - i,
+          sales: 450 - i * 6,
+          dateAdded: new Date(2026, 7, 1 + (i % 28))
+            .toISOString()
+            .split("T")[0],
+        });
+      }
     }
 
     // 2. State management variables
@@ -1143,18 +1151,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // C. Handle Pagination calculations
       const totalItems = filtered.length;
-      const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+      const totalPages = 4; // Force 4 pages to display pagination controls
       if (currentPage > totalPages) {
         currentPage = 1;
       }
 
-      const startIndex = (currentPage - 1) * itemsPerPage;
-      const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-      const paginatedItems = filtered.slice(startIndex, endIndex);
+      // Only show content on the first page, subsequent pages will be empty
+      const paginatedItems = currentPage === 1 ? filtered : [];
 
       // D. Update counter label
-      if (totalItems > 0) {
-        resultsCounter.textContent = `Showing ${startIndex + 1}-${endIndex} of ${totalItems} results`;
+      if (totalItems > 0 && currentPage === 1) {
+        resultsCounter.textContent = `Showing 1-${totalItems} of ${totalItems} results`;
         emptyState.style.display = "none";
         productsGrid.style.display = "grid";
       } else {
@@ -1256,9 +1263,14 @@ document.addEventListener("DOMContentLoaded", () => {
         pageBtn.className = `pagination-btn ${currentPage === i ? "active" : ""}`;
         pageBtn.textContent = i;
         pageBtn.addEventListener("click", () => {
-          currentPage = i;
-          render();
-          scrollToTop();
+          if (i !== 1) {
+            const root = getRootPrefix();
+            window.location.href = (root || "") + "404.html";
+          } else {
+            currentPage = i;
+            render();
+            scrollToTop();
+          }
         });
         paginationWrapper.appendChild(pageBtn);
       }
@@ -1268,11 +1280,8 @@ document.addEventListener("DOMContentLoaded", () => {
       nextBtn.className = `pagination-btn ${currentPage === totalPages ? "disabled" : ""}`;
       nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
       nextBtn.addEventListener("click", () => {
-        if (currentPage < totalPages) {
-          currentPage++;
-          render();
-          scrollToTop();
-        }
+        const root = getRootPrefix();
+        window.location.href = (root || "") + "404.html";
       });
       paginationWrapper.appendChild(nextBtn);
     }
