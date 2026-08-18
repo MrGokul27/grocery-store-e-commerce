@@ -303,6 +303,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Remember Me Checkbox validation handler
+  const rememberMeInput = document.getElementById("remember-me");
+  const rememberMeError = document.getElementById("remember-me-error");
+  if (rememberMeInput && rememberMeError) {
+    rememberMeInput.addEventListener("change", () => {
+      if (rememberMeInput.checked) {
+        clearError(rememberMeInput, rememberMeError);
+      }
+    });
+  }
+
   // 5. Form Submit Validation & Handlers for Login Form
   if (loginForm) {
     loginForm.addEventListener("submit", (e) => {
@@ -360,6 +371,20 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           clearError(passwordInput, passwordError);
         }
+      }
+
+      // Validate Remember Me checkbox
+      const rememberMeInput = document.getElementById("remember-me");
+      const rememberMeError = document.getElementById("remember-me-error");
+      if (rememberMeInput && !rememberMeInput.checked) {
+        showError(
+          rememberMeInput,
+          rememberMeError,
+          "You must check Remember Me to proceed.",
+        );
+        isFormValid = false;
+      } else if (rememberMeInput) {
+        clearError(rememberMeInput, rememberMeError);
       }
 
       // Execute login redirection or action if validation passes
@@ -492,6 +517,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Execute register redirection if validation passes
       if (isFormValid) {
+        localStorage.setItem("userName", nameValue);
         const submitBtn = document.getElementById("register-submit-btn");
         submitBtn.disabled = true;
         submitBtn.innerHTML =

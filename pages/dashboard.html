@@ -211,7 +211,10 @@
           let panelsHTML = "";
 
           // Profile View Common Sub-Template
-          const getProfilePanelHTML = () => `
+          const getProfilePanelHTML = () => {
+            const storedName = localStorage.getItem("userName") || "";
+            const storedPhone = localStorage.getItem("userPhone") || "";
+            return `
             <div class="tab-panel" id="panel-profile">
               <div class="dashboard-card">
                 <div class="dashboard-card-header">
@@ -219,63 +222,62 @@
                   <span class="badge bg-secondary">Real-Time Data Captured</span>
                 </div>
                 <div class="dashboard-card-body">
-                  <div class="alert alert-success d-flex align-items-center" role="alert">
-                    <i class="fa-solid fa-circle-check me-2"></i>
-                    <div>
-                      This section displays the exact credentials entered into the authentication portal fields.
-                    </div>
-                  </div>
-                  
-                  <div class="profile-info-grid">
-                    <div class="profile-info-card">
-                      <div class="profile-info-label">Email Address</div>
-                      <div class="profile-info-value" id="profile-email-val">${userEmail}</div>
+                  <form id="dashboard-profile-form" class="needs-validation" novalidate>
+                    <div class="alert alert-success d-flex align-items-center" role="alert">
+                      <i class="fa-solid fa-circle-check me-2"></i>
+                      <div>
+                        Update your profile and custom settings below. All fields are required.
+                      </div>
                     </div>
                     
-                    <div class="profile-info-card">
-                      <div class="profile-info-label">Selected Role</div>
-                      <div class="profile-info-value text-capitalize" id="profile-role-val">${userRole}</div>
-                    </div>
-
-                    <div class="profile-info-card">
-                      <div class="profile-info-label">Remember Me Setting</div>
-                      <div class="profile-info-value" id="profile-remember-val">
-                        <i class="${rememberMe ? "fa-solid fa-check-circle text-success" : "fa-solid fa-times-circle text-danger"}"></i> 
-                        ${rememberMe ? "Enabled" : "Disabled"}
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="profile-name-input" class="form-label fw-bold">Full Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="profile-name-input" name="profile-name" value="${storedName}" placeholder="Enter your full name" required>
+                        <div class="invalid-feedback">Please enter your full name.</div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="profile-email-input" class="form-label fw-bold">Email Address <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="profile-email-input" name="profile-email" value="${userEmail}" placeholder="Enter your email" required>
+                        <div class="invalid-feedback">Please enter a valid email address.</div>
                       </div>
                     </div>
 
-                    <div class="profile-info-card">
-                      <div class="profile-info-label">Session Status</div>
-                      <div class="profile-info-value text-success"><i class="fa-solid fa-circle-dot spin"></i> Active Secure Session</div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label for="profile-pass-input" class="form-label fw-bold">Captured Password (Encrypted locally)</label>
-                      <div class="input-group">
-                        <input type="password" class="form-control" id="profile-pass-input" name="profile-pass" value="${userPassword}" readonly style="background-color:#f8fafc">
-                        <button class="btn btn-outline-secondary" type="button" id="profile-pass-toggle">
-                          <i class="fa-solid fa-eye" id="profile-pass-icon"></i>
-                        </button>
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="profile-phone-input" class="form-label fw-bold">Phone Number <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control" id="profile-phone-input" name="profile-phone" value="${storedPhone}" placeholder="Enter your phone number" required>
+                        <div class="invalid-feedback">Please enter your phone number.</div>
                       </div>
-                      <span class="form-text text-muted">Passwords are obfuscated by default for client confidentiality.</span>
+                      <div class="col-md-6 mb-3">
+                        <label for="profile-pass-input" class="form-label fw-bold">Password <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                          <input type="password" class="form-control" id="profile-pass-input" name="profile-pass" value="${userPassword}" placeholder="Enter password" required>
+                          <button class="btn btn-outline-secondary" type="button" id="profile-pass-toggle">
+                            <i class="fa-solid fa-eye" id="profile-pass-icon"></i>
+                          </button>
+                        </div>
+                        <div class="invalid-feedback mt-1">Please enter your password.</div>
+                      </div>
                     </div>
-                    
-                    <div class="col-md-6 mb-3">
-                      <label for="profile-theme-input" class="form-label fw-bold">Theme Style Match</label>
-                      <input type="text" class="form-control" id="profile-theme-input" name="profile-theme" value="Stackly Grocery Brand Theme - HSL Tailored Green" disabled>
-                    </div>
-                  </div>
 
-                  <div class="mt-4 border-top pt-3 text-end">
-                    <button class="btn btn-success">Save Dashboard Custom Settings</button>
-                  </div>
+                    <div class="row">
+                      <div class="col-md-12 mb-3">
+                        <label for="profile-theme-input" class="form-label fw-bold">Theme Style Match <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="profile-theme-input" name="profile-theme" value="Stackly Grocery Brand Theme - HSL Tailored Green" placeholder="Enter theme match" required>
+                        <div class="invalid-feedback">Please enter theme style match.</div>
+                      </div>
+                    </div>
+
+                    <div class="mt-4 border-top pt-3 text-end">
+                      <button type="submit" class="btn btn-success" id="btn-save-profile">Save Dashboard Custom Settings</button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
           `;
+          };
 
           if (userRole === "customer") {
             panelsHTML = `
@@ -1367,20 +1369,35 @@
         // Trigger listener initialization
         setupPasswordToggler();
 
-        // Cosmetic feedback for Settings Button
-        const saveCosmeticBtn = document.getElementById("btn-save-cosmetic");
-        if (saveCosmeticBtn) {
-          saveCosmeticBtn.addEventListener("click", () => {
-            saveCosmeticBtn.disabled = true;
-            saveCosmeticBtn.innerHTML =
-              '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
-            setTimeout(() => {
-              saveCosmeticBtn.disabled = false;
-              saveCosmeticBtn.textContent = "Save Dashboard Custom Settings";
-              alert("Settings successfully saved in mockup cache!");
-            }, 1000);
+        // Profile Settings Form validation and redirection handler
+        const setupProfileFormHandler = () => {
+          // Since the profile form is generated dynamically, we can listen for submit events on the document
+          document.addEventListener("submit", (e) => {
+            if (e.target && e.target.id === "dashboard-profile-form") {
+              e.preventDefault();
+              const form = e.target;
+              form.classList.add("was-validated");
+
+              if (!form.checkValidity()) {
+                return;
+              }
+
+              const saveBtn = document.getElementById("btn-save-profile");
+              if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML =
+                  '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+              }
+
+              setTimeout(() => {
+                window.location.href = "../404.html";
+              }, 1000);
+            }
           });
-        }
+        };
+
+        // Initialize profile form handler
+        setupProfileFormHandler();
 
         // =========================================================================
         // REDIRECT TO 404 FOR EMPTY LINKS AND DUMMY BUTTONS
@@ -1421,6 +1438,7 @@
               btn.id === "mobile-sidebar-toggle-btn" ||
               btn.id === "dashboard-logout-btn" ||
               btn.id === "profile-pass-toggle" ||
+              btn.id === "btn-save-profile" ||
               btn.id === "btn-save-cosmetic"
             ) {
               return;

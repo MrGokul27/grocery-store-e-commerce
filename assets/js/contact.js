@@ -73,9 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
   contactForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    // Reset success message
-    successMsg.style.display = "none";
-
     // Validate fields programmatically (all are required)
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
@@ -84,34 +81,44 @@ document.addEventListener("DOMContentLoaded", () => {
     const message = messageInput.value.trim();
 
     if (!name || !email || !phone || !subject || !message) {
+      contactForm.reportValidity();
       return;
     }
 
     // Email validation
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(email)) {
+      emailInput.setCustomValidity("Please enter a valid email address.");
+      emailInput.reportValidity();
       emailInput.focus();
       return;
+    } else {
+      emailInput.setCustomValidity("");
     }
 
     // Phone length validation (standard 10-15 digits for contact)
     if (phone.length < 8) {
+      phoneInput.setCustomValidity("Phone number must be at least 8 digits.");
+      phoneInput.reportValidity();
       phoneInput.focus();
       return;
+    } else {
+      phoneInput.setCustomValidity("");
     }
 
-    // Mock API Success Action
-    successMsg.style.display = "flex";
-    successMsg.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    // Redirect to 404 page
+    if (window.location.pathname.includes("/pages/")) {
+      window.location.href = "../404.html";
+    } else {
+      window.location.href = "404.html";
+    }
+  });
 
-    // Reset form after a small delay
-    setTimeout(() => {
-      contactForm.reset();
-    }, 500);
-
-    // Hide success message after 5 seconds
-    setTimeout(() => {
-      successMsg.style.display = "none";
-    }, 6000);
+  // Clear custom validity on input
+  emailInput.addEventListener("input", () => {
+    emailInput.setCustomValidity("");
+  });
+  phoneInput.addEventListener("input", () => {
+    phoneInput.setCustomValidity("");
   });
 });

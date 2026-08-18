@@ -904,19 +904,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const originalText = submitBtn.textContent;
       submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
-      // Simulate API call
+      // Simulate API call and redirect to 404
       setTimeout(() => {
-        homeNewsletterForm.style.display = "none";
-        newsletterSuccessMsg.style.display = "flex";
-        emailInput.value = "";
-
-        // Reset after 6 seconds to let them subscribe another email if they want
-        setTimeout(() => {
-          homeNewsletterForm.style.display = "flex";
-          newsletterSuccessMsg.style.display = "none";
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalText;
-        }, 6000);
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+        if (emailInput) {
+          emailInput.value = "";
+        }
+        if (window.location.pathname.includes("/pages/")) {
+          window.location.href = "../404.html";
+        } else {
+          window.location.href = "404.html";
+        }
       }, 1000);
     });
   }

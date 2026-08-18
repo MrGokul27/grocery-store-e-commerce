@@ -183,15 +183,25 @@
             </div>
 
             <!-- Remember Me & Forgot Password Options -->
-            <div class="form-options">
-              <label class="remember-me-container">
-                <input type="checkbox" id="remember-me" name="remember" />
-                <span class="custom-checkbox"></span>
-                <span class="checkbox-label">Remember Me</span>
-              </label>
-              <a href="404.html" class="forgot-password-link"
-                >Forget Password?</a
-              >
+            <div class="form-group mb-3">
+              <div class="form-options">
+                <label class="remember-me-container mb-0">
+                  <input
+                    type="checkbox"
+                    id="remember-me"
+                    name="remember"
+                    required
+                  />
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-label"
+                    >Remember Me <span class="required-asterisk">*</span></span
+                  >
+                </label>
+                <a href="404.html" class="forgot-password-link"
+                  >Forget Password?</a
+                >
+              </div>
+              <span class="error-feedback" id="remember-me-error"></span>
             </div>
 
             <!-- Submit Button -->
