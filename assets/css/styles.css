@@ -586,7 +586,7 @@ custom-footer {
 /* Ellipse shape highlights */
 .hero-ellipse-1 {
   position: absolute;
-  top: 55%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 420px;
@@ -594,7 +594,6 @@ custom-footer {
   z-index: 2;
   pointer-events: none;
   object-fit: contain;
-  animation: rotateEllipse1 40s linear infinite;
 }
 
 .hero-ellipse-2 {
@@ -606,7 +605,6 @@ custom-footer {
   z-index: 3;
   pointer-events: none;
   object-fit: contain;
-  animation: rotateEllipse2 35s linear infinite;
 }
 
 /* Leaves overlays */

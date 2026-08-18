@@ -253,9 +253,9 @@
 
                   <div class="row">
                     <div class="col-md-6 mb-3">
-                      <label class="form-label fw-bold">Captured Password (Encrypted locally)</label>
+                      <label for="profile-pass-input" class="form-label fw-bold">Captured Password (Encrypted locally)</label>
                       <div class="input-group">
-                        <input type="password" class="form-control" id="profile-pass-input" value="${userPassword}" readonly style="background-color:#f8fafc">
+                        <input type="password" class="form-control" id="profile-pass-input" name="profile-pass" value="${userPassword}" readonly style="background-color:#f8fafc">
                         <button class="btn btn-outline-secondary" type="button" id="profile-pass-toggle">
                           <i class="fa-solid fa-eye" id="profile-pass-icon"></i>
                         </button>
@@ -264,8 +264,8 @@
                     </div>
                     
                     <div class="col-md-6 mb-3">
-                      <label class="form-label fw-bold">Theme Style Match</label>
-                      <input type="text" class="form-control" value="Stackly Grocery Brand Theme - HSL Tailored Green" disabled>
+                      <label for="profile-theme-input" class="form-label fw-bold">Theme Style Match</label>
+                      <input type="text" class="form-control" id="profile-theme-input" name="profile-theme" value="Stackly Grocery Brand Theme - HSL Tailored Green" disabled>
                     </div>
                   </div>
 
