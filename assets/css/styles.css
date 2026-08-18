@@ -2573,3 +2573,81 @@ custom-footer {
 .scroll-to-top:hover i {
   transform: translateY(-2px);
 }
+
+/* ==========================================
+   SCROLL ANIMATIONS (EXCEPT DASHBOARD)
+   ========================================== */
+
+/* Base transition setup */
+.reveal-on-scroll {
+  opacity: 0;
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+/* Off-screen / initial states using :not(.is-visible) to prevent overriding normal hover states */
+.reveal-on-scroll:not(.is-visible).fade-in {
+  /* Just opacity transition */
+}
+
+.reveal-on-scroll:not(.is-visible).fade-up {
+  transform: translateY(40px);
+}
+
+.reveal-on-scroll:not(.is-visible).fade-down {
+  transform: translateY(-40px);
+}
+
+.reveal-on-scroll:not(.is-visible).fade-left {
+  transform: translateX(-40px);
+}
+
+.reveal-on-scroll:not(.is-visible).fade-right {
+  transform: translateX(40px);
+}
+
+.reveal-on-scroll:not(.is-visible).zoom-in {
+  transform: scale(0.9);
+}
+
+.reveal-on-scroll:not(.is-visible).zoom-out {
+  transform: scale(1.1);
+}
+
+/* On-screen / visible state triggers */
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+}
+
+/* Staggered transition delays */
+.reveal-on-scroll.delay-100 {
+  transition-delay: 100ms;
+}
+.reveal-on-scroll.delay-200 {
+  transition-delay: 200ms;
+}
+.reveal-on-scroll.delay-300 {
+  transition-delay: 300ms;
+}
+.reveal-on-scroll.delay-400 {
+  transition-delay: 400ms;
+}
+.reveal-on-scroll.delay-500 {
+  transition-delay: 500ms;
+}
+.reveal-on-scroll.delay-600 {
+  transition-delay: 600ms;
+}
+
+/* Duration variations */
+.reveal-on-scroll.duration-600 {
+  transition-duration: 600ms;
+}
+.reveal-on-scroll.duration-1000 {
+  transition-duration: 1000ms;
+}
+.reveal-on-scroll.duration-1200 {
+  transition-duration: 1200ms;
+}

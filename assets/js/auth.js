@@ -550,4 +550,72 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 1500);
     });
   }
+
+  initScrollAnimations();
 });
+
+// =============================================================
+// --- Scroll Animations System ---
+// =============================================================
+function initScrollAnimations() {
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px 0px -80px 0px",
+    threshold: 0.1,
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  const setupAutoReveal = (rootEl) => {
+    rootEl.querySelectorAll(".reveal-children-fade-up").forEach((grid) => {
+      Array.from(grid.children).forEach((child, index) => {
+        if (!child.classList.contains("reveal-on-scroll")) {
+          child.classList.add("reveal-on-scroll", "fade-up");
+          const colCount = parseInt(grid.getAttribute("data-cols")) || 4;
+          const colIndex = index % colCount;
+          child.classList.add("delay-" + (colIndex + 1) * 100);
+        }
+      });
+    });
+  };
+
+  // Helper to observe element and its children
+  const observeNewElements = (rootEl) => {
+    setupAutoReveal(rootEl);
+    const targets = rootEl.querySelectorAll(".reveal-on-scroll");
+    targets.forEach((el) => {
+      if (!el.classList.contains("is-visible")) {
+        observer.observe(el);
+      }
+    });
+  };
+
+  // Initial load observation
+  observeNewElements(document);
+
+  // MutationObserver to watch for dynamically loaded grid items/cards
+  const mutationObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          if (node.classList.contains("reveal-on-scroll")) {
+            observer.observe(node);
+          }
+          observeNewElements(node);
+        }
+      });
+    });
+  });
+
+  mutationObserver.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+}

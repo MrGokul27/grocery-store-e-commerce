@@ -49,7 +49,7 @@
     <!-- Page Content -->
     <main class="offers-page container my-4 flex-grow-1">
       <!-- Title Section -->
-      <div class="offers-header">
+      <div class="offers-header reveal-on-scroll fade-up">
         <h1 class="offers-title">Offers & Deals</h1>
         <p class="offers-subtitle">
           Grab the best deals and save more on your daily essentials.
@@ -58,14 +58,14 @@
 
       <!-- Hero Promo Banner -->
       <div class="offers-hero-banner">
-        <div class="banner-content-left">
+        <div class="banner-content-left reveal-on-scroll fade-right">
           <span class="banner-badge">SUPER SAVER DEAL</span>
           <h2 class="banner-heading">Up to 50% off</h2>
           <p class="banner-subheading">On your favorite products</p>
           <p class="banner-text">Limited time offer. Shop now and save big!</p>
           <a href="#" class="banner-btn">Shop Now</a>
         </div>
-        <div class="banner-img-right">
+        <div class="banner-img-right reveal-on-scroll fade-left">
           <img
             src="../assets/images/offers/offers-banner-image.webp"
             alt="Grocery Basket"
@@ -80,7 +80,7 @@
       </div>
 
       <!-- Features Bar -->
-      <div class="features-bar">
+      <div class="features-bar reveal-children-fade-up" data-cols="4">
         <div class="feature-item">
           <div class="feature-icon-wrapper">
             <i class="fa-solid fa-tags"></i>
@@ -122,7 +122,7 @@
       <!-- Grid Layout for Sidebar Filters and Offers Content -->
       <div class="row g-4">
         <!-- Sidebar Filter Column -->
-        <aside class="col-lg-3 col-md-4">
+        <aside class="col-lg-3 col-md-4 reveal-on-scroll fade-right">
           <div class="offer-filter-column">
             <h2 class="section-title mb-3">Filter Offers</h2>
             <!-- Discount Filter Card -->
@@ -282,7 +282,7 @@
         </aside>
 
         <!-- Right Content Main Column -->
-        <div class="col-lg-9 col-md-8">
+        <div class="col-lg-9 col-md-8 reveal-on-scroll fade-left">
           <!-- TOP OFFERS SECTION -->
           <div class="section-header-row mb-3">
             <h2 class="section-title">Top Offers</h2>
@@ -312,7 +312,10 @@
 
           <div class="deal-inner-container">
             <!-- 3 Category Promo Banners Grid -->
-            <div class="row g-3 promo-banners-row">
+            <div
+              class="row g-3 promo-banners-row reveal-children-fade-up"
+              data-cols="3"
+            >
               <!-- Banner 1: Fruits -->
               <div class="col-lg-4 col-md-6">
                 <div class="offer-banner-card card-fruits">
@@ -368,7 +371,7 @@
 
             <!-- Product Carousel Slider -->
             <div
-              class="deals-slider-outer position-relative"
+              class="deals-slider-outer position-relative reveal-on-scroll fade-up delay-100"
               style="margin-top: 32px"
             >
               <!-- Navigation Buttons -->
@@ -718,7 +721,7 @@
     <section class="footer-features-newsletter-section">
       <!-- Newsletter Subscription Banner -->
       <div class="container">
-        <div class="newsletter-banner-card">
+        <div class="newsletter-banner-card reveal-on-scroll fade-up">
           <div class="row align-items-center">
             <div class="col-lg-7 col-md-8 position-relative z-3">
               <h3 class="newsletter-title">Subscribe to our Newsletter</h3>

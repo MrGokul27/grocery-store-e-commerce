@@ -51,7 +51,7 @@
       <div class="container">
         <div class="categories-page-layout">
           <!-- ============ Sidebar ============ -->
-          <aside class="categories-sidebar">
+          <aside class="categories-sidebar reveal-on-scroll fade-right">
             <ul class="sidebar-category-list" id="sidebar-category-list">
               <li>
                 <a
@@ -255,14 +255,18 @@
 
             <!-- Shop by Categories Grid -->
             <section class="categories-grid-section">
-              <div class="categories-grid-header">
+              <div class="categories-grid-header reveal-on-scroll fade-up">
                 <h2 class="categories-grid-title">Shop by Categories</h2>
                 <span class="categories-grid-count" id="categories-count"
                   >16 Categories</span
                 >
               </div>
 
-              <div class="categories-grid" id="categories-grid">
+              <div
+                class="categories-grid reveal-children-fade-up"
+                id="categories-grid"
+                data-cols="4"
+              >
                 <a
                   href="#"
                   class="category-grid-card"
@@ -520,7 +524,8 @@
       <!-- 1. Features Row -->
       <div class="container home-bottom-features mb-5">
         <div
-          class="row row-cols-1 row-cols-md-2 row-cols-lg-5 g-0 justify-content-between"
+          class="row row-cols-1 row-cols-md-2 row-cols-lg-5 g-0 justify-content-between reveal-children-fade-up"
+          data-cols="5"
         >
           <div class="col">
             <div class="categories-bottom-feature-card">
@@ -582,7 +587,7 @@
 
       <!-- 2. Newsletter Subscription Banner -->
       <div class="container">
-        <div class="newsletter-banner-card">
+        <div class="newsletter-banner-card reveal-on-scroll fade-up">
           <div class="row align-items-center">
             <div class="col-lg-7 col-md-8 position-relative z-3">
               <h3 class="newsletter-title">Subscribe to our Newsletter</h3>

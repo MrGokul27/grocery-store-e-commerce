@@ -264,9 +264,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Render Cards
-    currentPageItems.forEach((post) => {
+    currentPageItems.forEach((post, index) => {
       const cardCol = document.createElement("div");
-      cardCol.className = "col-lg-4 col-md-6 col-sm-12";
+      const colIndex = index % 3;
+      const delayClass = "delay-" + (colIndex + 1) * 100;
+      cardCol.className = `col-lg-4 col-md-6 col-sm-12 reveal-on-scroll fade-up ${delayClass}`;
 
       cardCol.innerHTML = `
         <article class="blog-card">
@@ -352,9 +354,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Display the first 3 posts as popular ones
     const popularPosts = blogPosts.slice(0, 3);
 
-    popularPosts.forEach((post) => {
+    popularPosts.forEach((post, index) => {
       const postItem = document.createElement("div");
-      postItem.className = "popular-post-item";
+      const delayClass = "delay-" + (index + 1) * 100;
+      postItem.className = `popular-post-item reveal-on-scroll fade-up ${delayClass}`;
       postItem.innerHTML = `
         <div class="popular-post-img-wrapper">
           <img src="${post.img}" alt="${post.title}" class="popular-post-img" />
