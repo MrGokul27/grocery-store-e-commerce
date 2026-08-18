@@ -546,7 +546,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       setTimeout(() => {
-        window.location.href = isSignup ? "login.html" : "dashboard.html";
+        window.location.href = "../404.html";
       }, 1500);
     });
   }
