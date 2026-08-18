@@ -359,6 +359,11 @@ body {
   color: var(--primary-color);
 }
 
+/* Hide Edge browser's native password reveal button */
+input[type="password"]::-ms-reveal {
+  display: none;
+}
+
 /* Password Toggle Button */
 .password-toggle-btn {
   position: absolute;
