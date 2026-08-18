@@ -1312,18 +1312,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll(".bestseller-add-btn").forEach((btn) => {
         btn.addEventListener("click", (e) => {
           e.stopPropagation();
-          const originalContent = btn.innerHTML;
-          btn.disabled = true;
-          btn.style.backgroundColor = "var(--primary-color)";
-          btn.style.color = "#ffffff";
-          btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Added!';
-
-          setTimeout(() => {
-            btn.disabled = false;
-            btn.style.backgroundColor = "";
-            btn.style.color = "";
-            btn.innerHTML = originalContent;
-          }, 1500);
+          const root = getRootPrefix();
+          window.location.href = (root || "") + "404.html";
         });
       });
     }

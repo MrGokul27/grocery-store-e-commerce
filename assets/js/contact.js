@@ -96,9 +96,9 @@ document.addEventListener("DOMContentLoaded", () => {
       emailInput.setCustomValidity("");
     }
 
-    // Phone length validation (standard 10-15 digits for contact)
-    if (phone.length < 8) {
-      phoneInput.setCustomValidity("Phone number must be at least 8 digits.");
+    // Phone length validation (exactly 10 digits required)
+    if (phone.length !== 10) {
+      phoneInput.setCustomValidity("Phone number must be exactly 10 digits.");
       phoneInput.reportValidity();
       phoneInput.focus();
       return;

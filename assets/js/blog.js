@@ -445,6 +445,24 @@ document.addEventListener("DOMContentLoaded", () => {
     renderBlogs();
   });
 
+  // Redirect click on blog card title to 404 page
+  if (blogGrid) {
+    blogGrid.addEventListener("click", (e) => {
+      const title = e.target.closest(".blog-card-title");
+      if (title) {
+        const getRootPrefixLocal = () => {
+          if (typeof getRootPrefix === "function") {
+            return getRootPrefix();
+          }
+          const depth = window.location.pathname.split("/pages/").length - 1;
+          return depth > 0 ? "../".repeat(depth) : "";
+        };
+        const root = getRootPrefixLocal();
+        window.location.href = (root || "") + "404.html";
+      }
+    });
+  }
+
   // -------------------------------------------------------------
   // Initial Render
   // -------------------------------------------------------------
